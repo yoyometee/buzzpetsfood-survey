@@ -1,8 +1,8 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
 import { corsHeaders } from '../_shared/cors.ts'
 
-const supabaseUrl = Deno.env.get('SUPABASE_URL')!
-const supabaseServiceKey = Deno.env.get('SUPABASE_SERVICE_KEY')!
+const supabaseUrl = Deno.env.get('https://mcsixclxwxvfyyddrzmh.supabase.co')!
+const supabaseServiceKey = Deno.env.get('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTQ2MDUzOCwiZXhwIjoyMDY3MDM2NTM4fQ.rbE3mx3jTiXStLadxjNO3yKZoinlCzxvN-wf_R3nkg0')!
 
 interface SurveyData {
   firstName: string
@@ -88,18 +88,12 @@ Deno.serve(async (req) => {
 
 async function getPostCodeData(supabase: any) {
   try {
-    console.log('Fetching postcode data...')
     const { data, error } = await supabase
       .from('postcodes')
       .select('postcode, subdistrict, district, province')
       .order('province', { ascending: true })
 
-    if (error) {
-      console.error('Supabase error:', error)
-      throw error
-    }
-
-    console.log('Postcode data received:', data?.length || 0, 'records')
+    if (error) throw error
 
     // Convert to array format like original Google Sheets
     const formattedData = data.map((row: any) => [
@@ -109,14 +103,11 @@ async function getPostCodeData(supabase: any) {
       row.province
     ])
 
-    console.log('Formatted data ready:', formattedData.length, 'records')
-
     return new Response(
       JSON.stringify(formattedData),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error) {
-    console.error('Failed to get postcode data:', error)
     throw new Error(`Failed to get postcode data: ${error.message}`)
   }
 }
