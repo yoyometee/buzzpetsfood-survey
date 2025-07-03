@@ -1,0 +1,12 @@
+[build]
+  command = "echo 'Building static site...'"
+  publish = "."
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://mcsixclxwxvfyyddrzmh.supabase.co/functions/v1/:splat"
+  status = 200
+  force = true
+
+[build.environment]
+  NODE_VERSION = "18"

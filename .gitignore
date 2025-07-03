@@ -1,0 +1,11 @@
+.env
+.env.local
+.env.production.local
+.env.development.local
+node_modules/
+dist/
+.netlify/
+.DS_Store
+*.log
+.vscode/
+.idea/
