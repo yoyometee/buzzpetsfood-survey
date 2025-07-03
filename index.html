@@ -1603,18 +1603,20 @@
     </div>
     </div>
 
-    <script>
+  <script>
         // ============== Configuration ==============
         // **สำคัญมาก: กรุณาเปลี่ยน URL ด้านล่างนี้เป็น URL จริงของ Supabase Edge Function ของคุณ**
         // คุณสามารถหา URL นี้ได้จาก Supabase Dashboard -> Project Settings -> API -> Project URL
         // เช่น: 'https://your-unique-project-id.supabase.co/functions/v1/survey-api'
-    // **สำคัญมาก: กรุณาเปลี่ยน YOUR_ANON_PUBLIC_KEY ที่นี่**
-// คุณสามารถหา API Key นี้ได้จาก Supabase Dashboard -> Project Settings -> API -> Project API keys -> anon (public)
-         const SUPABASE_FUNCTION_URL = 'https://mcsixclxwxvfyyddrzmh.supabase.co/functions/v1/survey-api'; // <-- ต้องแน่ใจว่าบรรทัดนี้อยู่ตรงนี้
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0NjA1MzgsImV4cCI6MjA2NzAzNjUzOH0.beq2VeTmn31QRPr5SmJZ1A5vc8PxWXugT89AVukwqm4'; // <-- เปลี่ยนตรงนี้!
-        // Global variables
-        let postCodeData = [];
+        const SUPABASE_FUNCTION_URL = 'https://mcsixclxwxvfyyddrzmh.supabase.co/functions/v1/survey-api'; // <-- ต้องแน่ใจว่าบรรทัดนี้อยู่ตรงนี้!
 
+        // **สำคัญมาก: กรุณาเปลี่ยน YOUR_ANON_PUBLIC_KEY ที่นี่**
+        // คุณสามารถหา API Key นี้ได้จาก Supabase Dashboard -> Project Settings -> API -> Project API keys -> anon (public)
+        const SUPABASE_ANON_KEY = 'YOUR_ANON_PUBLIC_KEY_GOES_HERE'; // <-- เปลี่ยนตรงนี้!
+
+        // Global variables (should be declared after the above constants)
+        let postCodeData = [];
+        
         // Updated pet food brands based on pet type
         let petFoodBrands = {
             แมว: [
@@ -1652,12 +1654,16 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
         // ============== API Functions ==============
         async function callSupabaseAPI(action, data = null) {
-            const url = `${SUPABASE_FUNCTION_URL}?action=${action}`;
+            // This is line 49 for the error message if we consider only script block.
+            const url = `${SUPABASE_FUNCTION_URL}?action=${action}`; 
 
             const options = {
                 method: data ? 'POST' : 'GET',
                 headers: {
                     'Content-Type': 'application/json',
+                    // *** เพิ่ม Authorization header ตรงนี้ ***
+                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+                    'apikey': SUPABASE_ANON_KEY // บางครั้งก็ใส่ apikey แยกต่างหากด้วย
                 }
             };
 
@@ -1669,7 +1675,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 const response = await fetch(url, options);
 
                 if (!response.ok) {
-                    const errorText = await response.text(); // Read the raw error response
+                    const errorText = await response.text();
                     console.error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
                     throw new Error(`Server error (${response.status}): ${errorText}`);
                 }
@@ -1697,17 +1703,16 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                     showError('ไม่สามารถโหลดข้อมูลรหัสไปรษณีย์ได้ กรุณาลองใหม่อีกครั้ง');
                 });
 
-            // โหลดตัวเลือกปัจจัย
+            // Load factor options
             loadFactorOptions();
 
             // Initialize selected counts
             updateSelectedCount('reasonNotBuyBuzz', 'reasonSelectedCount');
             updateSelectedCount('marketingChannelMultiple', 'channelSelectedCount');
             updateSelectedCount('improvementSuggestions', 'improveSelectedCount');
-            // updateSelectedCount for currentBrandMultiple will be called by updatePetBrandsAndSampleOptions
-
+            
             // Setup event listeners for "อื่นๆ" text fields in collapsible
-            setupBrandOtherListener(); // This needs to be called after brand checkboxes are populated
+            setupBrandOtherListener(); 
             document.getElementById('reasonOther').addEventListener('input', () => updateSelectedCount('reasonNotBuyBuzz', 'reasonSelectedCount'));
             document.getElementById('channelOther').addEventListener('input', () => updateSelectedCount('marketingChannelMultiple', 'channelSelectedCount'));
             document.getElementById('improveOther').addEventListener('input', () => updateSelectedCount('improvementSuggestions', 'improveSelectedCount'));
@@ -1825,7 +1830,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             document.getElementById('currentBrandOther').value = '';
         }
 
-        // โหลดตัวเลือกปัจจัยสำหรับ dropdown ทั้ง 3
+        // Load factor options for all three dropdowns
         function loadFactorOptions() {
             const factorSelects = ['factor1', 'factor2', 'factor3'];
 
@@ -1842,7 +1847,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             });
         }
 
-        // อัปเดตตัวเลือกปัจจัยเมื่อมีการเลือก
+        // Update factor options when a selection is made
         function updateFactorOptions() {
             const factor1 = document.getElementById('factor1').value;
             const factor2 = document.getElementById('factor2').value;
@@ -1850,7 +1855,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
             const selectedValues = [factor1, factor2, factor3].filter(val => val !== '');
 
-            // ตรวจสอบและแสดงช่องกรอก "อื่นๆ" สำหรับแต่ละลำดับ
+            // Check and display "อื่นๆ" input fields for each factor
             const factorOtherGroups = {
                 'factor1': document.getElementById('factor1OtherGroup'),
                 'factor2': document.getElementById('factor2OtherGroup'),
@@ -1862,7 +1867,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 'factor3': document.getElementById('factor3Other')
             };
 
-            // ลำดับที่ 1
+            // Factor 1
             if (factor1 === 'อื่นๆ') {
                 factorOtherGroups['factor1'].classList.remove('hidden-field');
                 factorOtherInputs['factor1'].required = true;
@@ -1879,7 +1884,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 factorOtherInputs['factor1'].value = '';
             }
 
-            // ลำดับที่ 2
+            // Factor 2
             if (factor2 === 'อื่นๆ') {
                 factorOtherGroups['factor2'].classList.remove('hidden-field');
                 factorOtherInputs['factor2'].required = true;
@@ -1896,7 +1901,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 factorOtherInputs['factor2'].value = '';
             }
 
-            // ลำดับที่ 3
+            // Factor 3
             if (factor3 === 'อื่นๆ') {
                 factorOtherGroups['factor3'].classList.remove('hidden-field');
                 factorOtherInputs['factor3'].required = true;
@@ -1913,14 +1918,14 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 factorOtherInputs['factor3'].value = '';
             }
 
-            // ปิดกั้นตัวเลือกที่ถูกเลือกแล้วใน dropdown อื่นๆ
+            // Disable options already selected in other dropdowns
             const factorSelects = ['factor1', 'factor2', 'factor3'];
 
             factorSelects.forEach(selectId => {
                 const select = document.getElementById(selectId);
                 const currentValue = select.value;
 
-                // เก็บตัวเลือกปัจจุบัน
+                // Keep current selection
                 select.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
 
                 factorOptions.forEach(option => {
@@ -1928,8 +1933,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                     optionElement.value = option;
                     optionElement.text = option;
 
-                    // ปิดกั้นตัวเลือกที่ถูกเลือกแล้วในช่องอื่น
-                    // แต่ยังคงให้เลือก "อื่นๆ" ได้เสมอ หรือเลือกค่าเดิมที่ถูกเลือกไปแล้วใน select ตัวเองได้
+                    // Disable selected options in other dropdowns
                     if (selectedValues.includes(option) && currentValue !== option && option !== 'อื่นๆ') {
                         optionElement.disabled = true;
                         optionElement.text += ' (เลือกแล้ว)';
@@ -1938,12 +1942,12 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                     select.appendChild(optionElement);
                 });
 
-                // คืนค่าเดิม
+                // Restore previous selection
                 select.value = currentValue;
             });
         }
 
-        // แสดง/ซ่อนช่องกรอกอาชีพอื่นๆ
+        // Show/hide other occupation input field
         function toggleOccupationOther() {
             const occupation = document.getElementById('occupation').value;
             const otherGroup = document.getElementById('occupationOtherGroup');
@@ -1951,13 +1955,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             if (occupation === 'อื่น ๆ') {
                 otherGroup.classList.remove('hidden-field');
                 document.getElementById('occupationOther').required = true;
-                // เพิ่ม animation และ scroll ไปยังช่องกรอก
                 setTimeout(() => {
                     otherGroup.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                     });
-                    // Focus ไปที่ input field
                     document.getElementById('occupationOther').focus();
                 }, 300);
             } else {
@@ -1967,48 +1969,41 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             }
         }
 
-        // แสดง/ซ่อนช่องกรอกแบรนด์อื่นๆ
+        // Show/hide other brand input field
         function toggleBrandOther() {
             const otherCheckbox = document.querySelector('input[name="currentBrandMultiple"][value="อื่นๆ"]');
-            const isChecked = otherCheckbox ? otherCheckbox.checked : false; // Check if the checkbox exists and is checked
+            const isChecked = otherCheckbox ? otherCheckbox.checked : false;
             const otherGroup = document.getElementById('brandOtherGroup');
 
             if (isChecked) {
                 otherGroup.classList.remove('hidden-field');
-                // เพิ่ม animation และ scroll ไปยังช่องกรอก
                 setTimeout(() => {
                     otherGroup.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                     });
-                    // Focus ไปที่ input field
                     document.getElementById('currentBrandOther').focus();
                 }, 300);
             } else {
                 otherGroup.classList.add('hidden-field');
-                // ล้างเฉพาะช่องกรอกข้อความ ไม่ลบค่า "อื่นๆ" ออกจาก checkbox
                 document.getElementById('currentBrandOther').value = '';
             }
 
-            // อัปเดต preview
             updateBrandPreview();
         }
 
-
-        // แสดง/ซ่อนช่องกรอกเหตุผลอื่นๆ
+        // Show/hide other reason input field
         function toggleReasonOther() {
             const isChecked = document.getElementById('reason9').checked;
             const otherGroup = document.getElementById('reasonOtherGroup');
 
             if (isChecked) {
                 otherGroup.classList.remove('hidden-field');
-                // เพิ่ม animation และ scroll ไปยังช่องกรอก
                 setTimeout(() => {
                     otherGroup.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                     });
-                    // Focus ไปที่ input field
                     document.getElementById('reasonOther').focus();
                 }, 300);
             } else {
@@ -2017,20 +2012,18 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             }
         }
 
-        // แสดง/ซ่อนช่องกรอกช่องทางอื่นๆ
+        // Show/hide other channel input field
         function toggleChannelOther() {
             const isChecked = document.getElementById('channel11').checked;
             const otherGroup = document.getElementById('channelOtherGroup');
 
             if (isChecked) {
                 otherGroup.classList.remove('hidden-field');
-                // เพิ่ม animation และ scroll ไปยังช่องกรอก
                 setTimeout(() => {
                     otherGroup.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                     });
-                    // Focus ไปที่ input field
                     document.getElementById('channelOther').focus();
                 }, 300);
             } else {
@@ -2039,20 +2032,18 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             }
         }
 
-        // แสดง/ซ่อนช่องกรอกข้อเสนอแนะอื่นๆ
+        // Show/hide other improvement input field
         function toggleImproveOther() {
             const isChecked = document.getElementById('improve11').checked;
             const otherGroup = document.getElementById('improveOtherGroup');
 
             if (isChecked) {
                 otherGroup.classList.remove('hidden-field');
-                // เพิ่ม animation และ scroll ไปยังช่องกรอก
                 setTimeout(() => {
                     otherGroup.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center'
                     });
-                    // Focus ไปที่ input field
                     document.getElementById('improveOther').focus();
                 }, 300);
             } else {
@@ -2061,12 +2052,11 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             }
         }
 
-        // อัปเดตตัวเลือกสินค้าตัวอย่างตามประเภทสัตว์เลี้ยง
+        // Update sample product options based on pet type
         function updateSampleOptions() {
             const petType = document.getElementById('petType').value;
             const sampleSelect = document.getElementById('sampleProduct');
 
-            // เคลียร์ตัวเลือกเดิม
             sampleSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
 
             if (petType === 'แมว') {
@@ -2099,7 +2089,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 });
 
             } else if (petType === 'สุนัขและแมว') {
-                // แสดงทั้งหมด
                 const allOptions = [
                     { value: 'Fish & Chicken Formula', text: 'Fish & Chicken Formula (อาหารแมว)' },
                     { value: 'Salmon Formula', text: 'Salmon Formula (อาหารแมว)' },
@@ -2123,7 +2112,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
         function onPostCodeDataReceived(data) {
             postCodeData = data;
 
-            // Populate province dropdown (unique values)
             const provinces = [...new Set(data.map(item => item[3]))].sort();
             const provinceSelect = document.getElementById('province');
 
@@ -2142,7 +2130,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             const subdistrictSelect = document.getElementById('subdistrict');
             const postcodeSelect = document.getElementById('postcode');
 
-            // Reset and disable dependent dropdowns
             districtSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
             subdistrictSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
             postcodeSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
@@ -2155,14 +2142,12 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 return;
             }
 
-            // Filter districts by selected province
             const districts = [...new Set(
                 postCodeData
                 .filter(item => item[3] === provinceValue)
                 .map(item => item[2])
             )].sort();
 
-            // Populate district dropdown
             districts.forEach(district => {
                 const option = document.createElement('option');
                 option.value = district;
@@ -2180,7 +2165,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             const subdistrictSelect = document.getElementById('subdistrict');
             const postcodeSelect = document.getElementById('postcode');
 
-            // Reset and disable dependent dropdowns
             subdistrictSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
             postcodeSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
 
@@ -2191,14 +2175,12 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 return;
             }
 
-            // Filter subdistricts by selected province and district
             const subdistricts = [...new Set(
                 postCodeData
                 .filter(item => item[3] === provinceValue && item[2] === districtValue)
                 .map(item => item[1])
             )].sort();
 
-            // Populate subdistrict dropdown
             subdistricts.forEach(subdistrict => {
                 const option = document.createElement('option');
                 option.value = subdistrict;
@@ -2216,7 +2198,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             const subdistrictValue = document.getElementById('subdistrict').value;
             const postcodeSelect = document.getElementById('postcode');
 
-            // Reset postcode dropdown
             postcodeSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
 
             if (!subdistrictValue) {
@@ -2224,7 +2205,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 return;
             }
 
-            // Filter postcodes by selected province, district, and subdistrict
             const postcodes = [...new Set(
                 postCodeData
                 .filter(item =>
@@ -2235,7 +2215,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 .map(item => item[0])
             )].sort();
 
-            // Populate postcode dropdown
             postcodes.forEach(postcode => {
                 const option = document.createElement('option');
                 option.value = postcode;
@@ -2251,7 +2230,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             const checkedChannels = document.querySelectorAll('input[name="marketingChannelMultiple"]:checked');
             const receiptGroup = document.getElementById('receiptUploadGroup');
 
-            // ตรวจสอบว่ามีการเลือก "เห็นสินค้า/ป้ายโฆษณา ในร้านอาหารสัตว์เลี้ยง" หรือไม่
             let showReceipt = false;
             checkedChannels.forEach(checkbox => {
                 if (checkbox.value === 'เห็นสินค้า/ป้ายโฆษณา ในร้านอาหารสัตว์เลี้ยง') {
@@ -2263,8 +2241,8 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 receiptGroup.style.display = 'block';
             } else {
                 receiptGroup.style.display = 'none';
-                document.getElementById('receipt').value = ''; // Clear selected file
-                document.getElementById('imagePreview').style.display = 'none'; // Hide image preview
+                document.getElementById('receipt').value = '';
+                document.getElementById('imagePreview').style.display = 'none';
             }
         }
 
@@ -2292,26 +2270,22 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             const gridContainer = previewContainer.querySelector('div');
             const fileCountDiv = document.getElementById('fileCount');
 
-            // ล้างรูปภาพเดิม
             gridContainer.innerHTML = '';
 
             if (input.files && input.files.length > 0) {
-                // ตรวจสอบจำนวนไฟล์ไม่เกิน 5
                 if (input.files.length > 5) {
                     alert('สามารถเลือกได้สูงสุด 5 รูปเท่านั้น กรุณาเลือกใหม่');
-                    input.value = ''; // ล้างการเลือกไฟล์
+                    input.value = '';
                     previewContainer.style.display = 'none';
                     fileCountDiv.style.display = 'none';
                     return;
                 }
 
-                // ตรวจสอบประเภทไฟล์
                 const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
 
                 for (let i = 0; i < input.files.length; i++) {
                     const file = input.files[i];
 
-                    // ตรวจสอบประเภทไฟล์
                     if (!allowedTypes.includes(file.type)) {
                         alert(`ไฟล์ "${file.name}" ไม่ใช่ไฟล์รูปภาพที่รองรับ\nรองรับเฉพาะ: JPG, JPEG, PNG, GIF, WebP`);
                         input.value = '';
@@ -2321,11 +2295,9 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                     }
                 }
 
-                // แสดงจำนวนไฟล์ที่เลือก
                 fileCountDiv.textContent = `เลือกแล้ว ${input.files.length} รูป`;
                 fileCountDiv.style.display = 'block';
 
-                // สร้าง preview สำหรับแต่ละไฟล์
                 Array.from(input.files).forEach((file, index) => {
                     const reader = new FileReader();
 
@@ -2337,7 +2309,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                         img.src = e.target.result;
                         img.alt = `รูปภาพที่ ${index + 1}`;
 
-                        // เพิ่มหมายเลขรูปภาพ
                         const numberLabel = document.createElement('div');
                         numberLabel.className = 'image-number';
                         numberLabel.textContent = index + 1;
@@ -2391,34 +2362,32 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             }
         }
 
-        // รวบรวมค่าจาก checkbox groups
+        // Collect values from checkbox groups
         function getCheckboxValues(name) {
             const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
             return Array.from(checkboxes).map(cb => cb.value);
         }
 
-        // ฟังก์ชันจัดการ collapsible sections
+        // Handle collapsible sections
         function toggleCollapsible(targetId) {
             const content = document.getElementById(targetId);
             const header = content.previousElementSibling;
 
-            // Toggle active class
             header.classList.toggle('active');
             content.classList.toggle('active');
         }
 
-        // ฟังก์ชันอัปเดตจำนวนที่เลือกในแต่ละ section
+        // Update selected count for each section
         function updateSelectedCount(checkboxName, countElementId) {
             const selectedCount = getCheckboxValues(checkboxName).length;
             document.getElementById(countElementId).textContent = selectedCount;
 
-            // อัปเดต preview สำหรับแบรนด์
             if (checkboxName === 'currentBrandMultiple') {
                 updateBrandPreview();
             }
         }
 
-        // ฟังก์ชันอัปเดตการแสดงรายการแบรนด์ที่เลือก
+        // Update brand preview display
         function updateBrandPreview() {
             const selectedBrands = getCheckboxValues('currentBrandMultiple');
             const brandOtherText = document.getElementById('currentBrandOther').value.trim();
@@ -2431,17 +2400,14 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 
             let displayItems = [...selectedBrands];
 
-            // ถ้าเลือก "อื่นๆ" และมีการกรอกข้อมูล
             if (selectedBrands.includes('อื่นๆ') && brandOtherText) {
-                // แทนที่ "อื่นๆ" ด้วยข้อมูลที่กรอก
                 const otherIndex = displayItems.indexOf('อื่นๆ');
                 if (otherIndex > -1) {
                     displayItems[otherIndex] = `อื่นๆ (${brandOtherText})`;
                 } else {
-                    displayItems.push(`อื่นๆ (${brandOtherText})`); // กรณีอื่นๆ ถูกเลือกแล้วแต่ไม่มีใน displayItems (อาจจะมาจากโหลดเก่า)
+                    displayItems.push(`อื่นๆ (${brandOtherText})`);
                 }
             } else if (selectedBrands.includes('อื่นๆ') && !brandOtherText) {
-                // ถ้าเลือก "อื่นๆ" แต่ยังไม่ได้กรอกข้อความ ให้แสดง "อื่นๆ (ยังไม่ได้ระบุ)"
                 const otherIndex = displayItems.indexOf('อื่นๆ');
                 if (otherIndex > -1) {
                     displayItems[otherIndex] = `อื่นๆ (ยังไม่ได้ระบุ)`;
@@ -2456,8 +2422,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             `;
         }
 
-
-        // เพิ่ม event listener สำหรับช่องกรอก "อื่นๆ" ของแบรนด์
+        // Add event listener for "อื่นๆ" brand input
         function setupBrandOtherListener() {
             const brandOtherInput = document.getElementById('currentBrandOther');
             if (brandOtherInput) {
@@ -2477,7 +2442,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             document.getElementById('errorMessages').style.display = 'none';
             document.getElementById('errorMessages').innerHTML = '';
 
-            // --- 1. ข้อมูลส่วนตัว ---
+            // --- 1. Personal Information ---
             const firstName = document.getElementById('firstName').value.trim();
             const lastName = document.getElementById('lastName').value.trim();
             const gender = document.querySelector('input[name="gender"]:checked');
@@ -2496,7 +2461,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             else if (occupation === "อื่น ๆ" && !occupationOther) { isValid = false; errorMessages.push("รายละเอียดอาชีพ"); if (!firstInvalidField) firstInvalidField = document.getElementById('occupationOther'); }
             if (!monthlyIncome) { isValid = false; errorMessages.push("รายได้ต่อเดือน"); if (!firstInvalidField) firstInvalidField = document.getElementById('monthlyIncome'); }
 
-            // --- 2. ข้อมูลสัตว์เลี้ยง ---
+            // --- 2. Pet Information ---
             const petType = document.getElementById('petType').value;
             const petCount = document.getElementById('petCount').value;
             const currentBrands = getCheckboxValues('currentBrandMultiple');
@@ -2510,7 +2475,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             else if (currentBrands.includes('อื่นๆ') && !currentBrandOther) { isValid = false; errorMessages.push("รายละเอียดแบรนด์อื่นๆ"); if (!firstInvalidField) firstInvalidField = document.getElementById('currentBrandOther'); }
             if (!monthlyExpense) { isValid = false; errorMessages.push("ค่าใช้จ่ายสำหรับสัตว์เลี้ยง"); if (!firstInvalidField) firstInvalidField = document.getElementById('monthlyExpense'); }
 
-            // Validate receipt upload if relevant marketing channel is selected
             const marketingChannels = getCheckboxValues('marketingChannelMultiple');
             const showReceiptRequired = marketingChannels.includes('เห็นสินค้า/ป้ายโฆษณา ในร้านอาหารสัตว์เลี้ยง');
             if (showReceiptRequired && (!receiptUploadInput || receiptUploadInput.files.length === 0)) {
@@ -2519,13 +2483,12 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 if (!firstInvalidField) firstInvalidField = receiptUploadInput;
             }
 
-
             const reasonNotBuyBuzz = getCheckboxValues('reasonNotBuyBuzz');
             const reasonOther = document.getElementById('reasonOther').value.trim();
 
             if (reasonNotBuyBuzz.includes('อื่นๆ') && !reasonOther) { isValid = false; errorMessages.push("รายละเอียดเหตุผลที่ไม่เลือก Buzz"); if (!firstInvalidField) firstInvalidField = document.getElementById('reasonOther'); }
 
-            // --- 3. พฤติกรรมผู้บริโภค ---
+            // --- 3. Consumer Behavior ---
             const marketingChannel = getCheckboxValues('marketingChannelMultiple');
             const channelOther = document.getElementById('channelOther').value.trim();
 
@@ -2539,7 +2502,6 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             if (!factor1 || !factor2 || !factor3) { isValid = false; errorMessages.push("ปัจจัยที่สำคัญที่สุด 3 ข้อ"); if (!firstInvalidField) firstInvalidField = document.getElementById('factor1'); }
             else {
                 const selectedFactors = [factor1, factor2, factor3];
-                // Check for duplicates among the three factors, excluding 'อื่นๆ'
                 const nonOtherFactors = selectedFactors.filter(f => f !== 'อื่นๆ');
                 const uniqueNonOtherFactors = new Set(nonOtherFactors);
                 if (uniqueNonOtherFactors.size !== nonOtherFactors.length) {
@@ -2558,7 +2520,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             if (improvementSuggestions.includes('อื่นๆ') && !improveOther) { isValid = false; errorMessages.push("รายละเอียดข้อเสนอแนะอื่นๆ"); if (!firstInvalidField) firstInvalidField = document.getElementById('improveOther'); }
 
 
-            // --- 4. ที่อยู่ในการจัดส่ง ---
+            // --- 4. Shipping Address ---
             const houseNumber = document.getElementById('houseNumber').value.trim();
             const province = document.getElementById('province').value;
             const district = document.getElementById('district').value;
@@ -2571,7 +2533,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             if (!subdistrict) { isValid = false; errorMessages.push("ตำบล"); if (!firstInvalidField) firstInvalidField = document.getElementById('subdistrict'); }
             if (!postcode) { isValid = false; errorMessages.push("รหัสไปรษณีย์"); if (!firstInvalidField) firstInvalidField = document.getElementById('postcode'); }
 
-            // --- 5. ข้อมูลติดต่อ ---
+            // --- 5. Contact Information ---
             const phone = document.getElementById('phone').value.trim();
             const email = document.getElementById('email').value.trim();
             const sampleProduct = document.getElementById('sampleProduct').value;
@@ -2582,7 +2544,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { isValid = false; errorMessages.push("รูปแบบอีเมลไม่ถูกต้อง"); if (!firstInvalidField) firstInvalidField = document.getElementById('email'); }
             if (!sampleProduct) { isValid = false; errorMessages.push("สินค้าตัวอย่างที่ต้องการ"); if (!firstInvalidField) firstInvalidField = document.getElementById('sampleProduct'); }
 
-            // --- 6. เงื่อนไขและข้อตกลง ---
+            // --- 6. Terms and Conditions ---
             const terms1 = document.getElementById('terms1').checked;
             if (!terms1) { isValid = false; errorMessages.push("การยอมรับเงื่อนไขข้อที่ 1"); if (!firstInvalidField) firstInvalidField = document.getElementById('terms1'); }
 
@@ -2591,14 +2553,13 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 showError(`กรุณากรอกข้อมูลที่จำเป็นให้ครบถ้วน: ${Array.from(new Set(errorMessages)).join(', ')}`);
                 if (firstInvalidField) {
                     firstInvalidField.focus();
-                    // Highlight the field's parent form-group for visibility
                     let currentElement = firstInvalidField;
                     while (currentElement && !currentElement.classList.contains('form-group')) {
                         currentElement = currentElement.parentElement;
                     }
                     if (currentElement) {
                         currentElement.classList.add('newly-shown');
-                        setTimeout(() => currentElement.classList.remove('newly-shown'), 2000); // Remove highlight after 2 seconds
+                        setTimeout(() => currentElement.classList.remove('newly-shown'), 2000);
                         currentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                     }
                 }
@@ -2607,31 +2568,25 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             return isValid;
         }
 
-
         // Fixed form submission function
         function submitForm() {
             console.log("submitForm() called");
 
-            // Validate form before submission
             if (!validateForm()) {
                 return;
             }
 
-            // Show loading spinner
             document.getElementById('loading').style.display = 'block';
-            document.getElementById('formContainer').style.display = 'none'; // Hide form while loading
+            document.getElementById('formContainer').style.display = 'none';
             document.getElementById('errorMessages').innerHTML = '';
             document.getElementById('errorMessages').style.display = 'none';
 
-
             try {
-                // รวบรวมค่าจาก checkbox groups
                 const reasonNotBuyBuzzValues = getCheckboxValues('reasonNotBuyBuzz');
                 const marketingChannelMultipleValues = getCheckboxValues('marketingChannelMultiple');
                 const improvementSuggestionsValues = getCheckboxValues('improvementSuggestions');
                 const currentBrandMultipleValues = getCheckboxValues('currentBrandMultiple');
 
-                // Collect form data
                 const formData = {
                     firstName: document.getElementById('firstName').value.trim(),
                     lastName: document.getElementById('lastName').value.trim(),
@@ -2643,27 +2598,26 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                     occupationOther: document.getElementById('occupationOther').value.trim() || null,
                     monthlyIncome: document.getElementById('monthlyIncome').value,
                     villageOrBuilding: document.getElementById('villageOrBuilding').value.trim() || null,
-                    houseNumber: document.getElementById('houseNumber').value.trim(), // Required
+                    houseNumber: document.getElementById('houseNumber').value.trim(),
                     moo: document.getElementById('moo').value.trim() || null,
                     soi: document.getElementById('soi').value.trim() || null,
                     road: document.getElementById('road').value.trim() || null,
-                    province: document.getElementById('province').value, // Required
-                    district: document.getElementById('district').value, // Required
-                    subdistrict: document.getElementById('subdistrict').value, // Required
-                    postcode: document.getElementById('postcode').value, // Required
-                    phone: document.getElementById('phone').value.trim(), // Required
-                    email: document.getElementById('email').value.trim(), // Required
+                    province: document.getElementById('province').value,
+                    district: document.getElementById('district').value,
+                    subdistrict: document.getElementById('subdistrict').value,
+                    postcode: document.getElementById('postcode').value,
+                    phone: document.getElementById('phone').value.trim(),
+                    email: document.getElementById('email').value.trim(),
                     petType: document.getElementById('petType').value,
                     petCount: document.getElementById('petCount').value,
                     monthlyExpense: document.getElementById('monthlyExpense').value,
-                    sampleProduct: document.getElementById('sampleProduct').value, // Required
+                    sampleProduct: document.getElementById('sampleProduct').value,
                     terms1: document.getElementById('terms1').checked,
                     terms2: document.getElementById('terms2').checked,
                     terms3: document.getElementById('terms3').checked,
-                    notes: null, // No direct input for notes, can be added if needed
-                    status: 'ลงทะเบียนสำเร็จ', // Default status
+                    notes: null,
+                    status: 'ลงทะเบียนสำเร็จ',
 
-                    // Process multi-select fields and 'อื่นๆ' inputs
                     currentBrand: (() => {
                         let brands = [...currentBrandMultipleValues];
                         if (brands.includes('อื่นๆ') && document.getElementById('currentBrandOther').value.trim()) {
@@ -2676,7 +2630,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                         }
                         return brands.join(', ') || null;
                     })(),
-                    currentBrandOther: document.getElementById('currentBrandOther').value.trim() || null, // Store "อื่นๆ" text separately if needed
+                    currentBrandOther: document.getElementById('currentBrandOther').value.trim() || null,
 
                     reasonNotBuyBuzz: (() => {
                         let reasons = [...reasonNotBuyBuzzValues];
@@ -2703,7 +2657,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                         }
                         return channels.join(', ') || null;
                     })(),
-                    marketingChannelOther: document.getElementById('channelOther').value.trim() || null, // Store "อื่นๆ" text separately if needed
+                    marketingChannelOther: document.getElementById('channelOther').value.trim() || null,
 
                     importantFactors: [
                         document.getElementById('factor1').value === 'อื่นๆ' ? document.getElementById('factor1Other').value.trim() : document.getElementById('factor1').value,
@@ -2723,11 +2677,10 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                         }
                         return suggestions.join(', ') || null;
                     })(),
-                    improvementSuggestionsOther: document.getElementById('improveOther').value.trim() || null, // Store "อื่นๆ" text separately if needed
+                    improvementSuggestionsOther: document.getElementById('improveOther').value.trim() || null,
 
-                    // Receipt files - will be processed into base64 and added below
-                    has_receipt_file: false, // Default
-                    receipt_image_urls: null, // Default
+                    has_receipt_file: false,
+                    receipt_image_urls: null,
                 };
 
                 console.log("Form data before file processing:", formData);
@@ -2744,34 +2697,32 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                     uploadedFiles.forEach((file, index) => {
                         const reader = new FileReader();
                         reader.onload = function(e) {
-                            const base64Data = e.target.result.split(',')[1]; // Remove data URL prefix
+                            const base64Data = e.target.result.split(',')[1];
                             filesData.push({
                                 name: file.name,
                                 type: file.type,
-                                data: base64Data // This will be the base64 string
+                                data: base64Data
                             });
 
                             filesProcessedCount++;
 
-                            // If all files are processed, update formData and send
                             if (filesProcessedCount === uploadedFiles.length) {
                                 console.log("All files processed to base64 successfully.");
                                 formData.has_receipt_file = true;
-                                formData.receiptFile = filesData; // Send array of file objects
+                                formData.receiptFile = filesData;
                                 sendToServer(formData);
                             }
                         };
                         reader.onerror = function(e) {
                             console.error("Error reading file to base64:", e);
                             document.getElementById('loading').style.display = 'none';
-                            document.getElementById('formContainer').style.display = 'block'; // Show form again
+                            document.getElementById('formContainer').style.display = 'block';
                             showError(`เกิดข้อผิดพลาดในการอ่านไฟล์ภาพ: ${file.name}`);
-                            return; // Stop further processing and return
+                            return;
                         };
                         reader.readAsDataURL(file);
                     });
                 } else {
-                    // No files to upload, send form data directly
                     console.log("No files selected, submitting form data directly.");
                     sendToServer(formData);
                 }
@@ -2779,7 +2730,7 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
             } catch (error) {
                 console.error("Error in submitForm:", error);
                 document.getElementById('loading').style.display = 'none';
-                document.getElementById('formContainer').style.display = 'block'; // Show form again
+                document.getElementById('formContainer').style.display = 'block';
                 showError(`เกิดข้อผิดพลาดที่ไม่คาดคิด กรุณาลองใหม่อีกครั้ง: ${error.message || 'ไม่สามารถส่งข้อมูลได้'}`);
             }
         }
@@ -2789,15 +2740,12 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                 .then(response => {
                     console.log("Server response:", response);
 
-                    // Hide loading spinner
                     document.getElementById('loading').style.display = 'none';
 
-                    // Check if submission was successful
                     if (response.success) {
-                        // Successfully submitted - display thank you message
                         const formContent = document.querySelector('.form-content');
                         if (formContent) {
-                            formContent.innerHTML = ''; // Clear form content
+                            formContent.innerHTML = '';
                             const thankYouHTML = `
                                 <div id="thankYouMessage" style="display:block; text-align:center; margin:40px auto; padding:40px; background-color:#07476c; border-radius:12px; border-left:4px solid #4caf50; color:#ffffff; max-width:600px;">
                                     <h2 style="color:#ffffff; margin-bottom:20px; font-size:28px; font-weight:600;">THANK YOU</h2>
@@ -2814,20 +2762,17 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
                             alert("ขอบคุณสำหรับการลงทะเบียน! เราจะจัดส่งผลิตภัณฑ์ตัวอย่างให้ท่านภายใน 30 วัน");
                         }
                     } else {
-                        // Failed to submit - display error message from server
                         console.warn("Registration failed:", response.message, response.errorDetail || '', response.errorCode || '');
-                        document.getElementById('formContainer').style.display = 'block'; // Show form again
+                        document.getElementById('formContainer').style.display = 'block';
                         showError(response.message || 'เกิดข้อผิดพลาดในการลงทะเบียน กรุณาลองใหม่อีกครั้ง');
                     }
                 })
                 .catch(error => {
-                    // Hide loading spinner
                     document.getElementById('loading').style.display = 'none';
-                    document.getElementById('formContainer').style.display = 'block'; // Show form again
+                    document.getElementById('formContainer').style.display = 'block';
 
                     console.error("Server communication error:", error);
 
-                    // Display a general error message
                     showError('เกิดข้อผิดพลาดในการติดต่อระบบ กรุณาลองใหม่อีกครั้ง หรือติดต่อผู้ดูแลระบบ');
                 });
         }
