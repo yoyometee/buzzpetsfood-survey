@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <base target="_top">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>BUZZ PETS FOOD Survey</title>
+
   <link href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600&family=Kanit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
-  
-  <!-- Supabase CDN -->
-  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
-  
   <style>
     :root {
       --primary-color: #05314a;
@@ -189,7 +187,7 @@
     .checkbox-group {
       margin-top: 10px;
     }
-
+    
     .checkbox-container {
       display: flex;
       align-items: flex-start;
@@ -544,7 +542,7 @@
     .mobile-only {
       display: none;
     }
-
+    
     .birth-date-container {
       display: flex;
       gap: 10px;
@@ -743,13 +741,13 @@
       transition: all 0.3s ease;
     }
 
+    .form-group.newly-shown {
+      animation: fadeIn 0.4s ease-out, highlightField 1.5s ease-out;
+    }
+
     @keyframes highlightField {
       0% { background-color: rgba(61, 179, 227, 0.1); }
       100% { background-color: transparent; }
-    }
-
-    .form-group.newly-shown {
-      animation: fadeIn 0.4s ease-out, highlightField 1.5s ease-out;
     }
 
     @keyframes fadeOut {
@@ -770,7 +768,7 @@
       border-color: var(--accent-color);
       outline: none;
     }
-  
+    
     @media (max-width: 768px) {
       .mobile-only {
         display: inline;
@@ -952,7 +950,7 @@
       <div id="formContainer">
         <form id="surveyForm">
           
-          <!-- ข้อมูลส่วนตัว -->
+          <!-- 1. ข้อมูลส่วนตัว -->
           <div class="form-section">
             <h3 class="form-section-title">ข้อมูลส่วนตัว</h3>
             
@@ -999,16 +997,48 @@
                 </div>
               </div>
             </div>
-                
+              
             <div class="form-col">
               <div class="form-group">
                 <label for="birthDate" class="required-field">วันเดือนปีเกิด</label>
                 <div class="birth-date-container" style="display: flex; gap: 10px;">
+                  <!-- วัน -->
                   <select id="birthDay" name="birthDay" required style="flex: 1;">
                     <option value="">วัน</option>
-                    <!-- จะถูกเติมด้วย JavaScript -->
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                    <option value="24">24</option>
+                    <option value="25">25</option>
+                    <option value="26">26</option>
+                    <option value="27">27</option>
+                    <option value="28">28</option>
+                    <option value="29">29</option>
+                    <option value="30">30</option>
+                    <option value="31">31</option>
                   </select>
                   
+                  <!-- เดือน -->
                   <select id="birthMonth" name="birthMonth" required style="flex: 1;">
                     <option value="">เดือน</option>
                     <option value="มกราคม">มกราคม</option>
@@ -1025,9 +1055,110 @@
                     <option value="ธันวาคม">ธันวาคม</option>
                   </select>
                   
+                  <!-- ปี (พ.ศ.) -->
                   <select id="birthYear" name="birthYear" required style="flex: 1;">
                     <option value="">ปี (พ.ศ.)</option>
-                    <!-- จะถูกเติมด้วย JavaScript -->
+                    <option value="2567">2567</option>
+                    <option value="2566">2566</option>
+                    <option value="2565">2565</option>
+                    <option value="2564">2564</option>
+                    <option value="2563">2563</option>
+                    <option value="2562">2562</option>
+                    <option value="2561">2561</option>
+                    <option value="2560">2560</option>
+                    <option value="2559">2559</option>
+                    <option value="2558">2558</option>
+                    <option value="2557">2557</option>
+                    <option value="2556">2556</option>
+                    <option value="2555">2555</option>
+                    <option value="2554">2554</option>
+                    <option value="2553">2553</option>
+                    <option value="2552">2552</option>
+                    <option value="2551">2551</option>
+                    <option value="2550">2550</option>
+                    <option value="2549">2549</option>
+                    <option value="2548">2548</option>
+                    <option value="2547">2547</option>
+                    <option value="2546">2546</option>
+                    <option value="2545">2545</option>
+                    <option value="2544">2544</option>
+                    <option value="2543">2543</option>
+                    <option value="2542">2542</option>
+                    <option value="2541">2541</option>
+                    <option value="2540">2540</option>
+                    <option value="2539">2539</option>
+                    <option value="2538">2538</option>
+                    <option value="2537">2537</option>
+                    <option value="2536">2536</option>
+                    <option value="2535">2535</option>
+                    <option value="2534">2534</option>
+                    <option value="2533">2533</option>
+                    <option value="2532">2532</option>
+                    <option value="2531">2531</option>
+                    <option value="2530">2530</option>
+                    <option value="2529">2529</option>
+                    <option value="2528">2528</option>
+                    <option value="2527">2527</option>
+                    <option value="2526">2526</option>
+                    <option value="2525">2525</option>
+                    <option value="2524">2524</option>
+                    <option value="2523">2523</option>
+                    <option value="2522">2522</option>
+                    <option value="2521">2521</option>
+                    <option value="2520">2520</option>
+                    <option value="2519">2519</option>
+                    <option value="2518">2518</option>
+                    <option value="2517">2517</option>
+                    <option value="2516">2516</option>
+                    <option value="2515">2515</option>
+                    <option value="2514">2514</option>
+                    <option value="2513">2513</option>
+                    <option value="2512">2512</option>
+                    <option value="2511">2511</option>
+                    <option value="2510">2510</option>
+                    <option value="2509">2509</option>
+                    <option value="2508">2508</option>
+                    <option value="2507">2507</option>
+                    <option value="2506">2506</option>
+                    <option value="2505">2505</option>
+                    <option value="2504">2504</option>
+                    <option value="2503">2503</option>
+                    <option value="2502">2502</option>
+                    <option value="2501">2501</option>
+                    <option value="2500">2500</option>
+                    <option value="2499">2499</option>
+                    <option value="2498">2498</option>
+                    <option value="2497">2497</option>
+                    <option value="2496">2496</option>
+                    <option value="2495">2495</option>
+                    <option value="2494">2494</option>
+                    <option value="2493">2493</option>
+                    <option value="2492">2492</option>
+                    <option value="2491">2491</option>
+                    <option value="2490">2490</option>
+                    <option value="2489">2489</option>
+                    <option value="2488">2488</option>
+                    <option value="2487">2487</option>
+                    <option value="2486">2486</option>
+                    <option value="2485">2485</option>
+                    <option value="2484">2484</option>
+                    <option value="2483">2483</option>
+                    <option value="2482">2482</option>
+                    <option value="2481">2481</option>
+                    <option value="2480">2480</option>
+                    <option value="2479">2479</option>
+                    <option value="2478">2478</option>
+                    <option value="2477">2477</option>
+                    <option value="2476">2476</option>
+                    <option value="2475">2475</option>
+                    <option value="2474">2474</option>
+                    <option value="2473">2473</option>
+                    <option value="2472">2472</option>
+                    <option value="2471">2471</option>
+                    <option value="2470">2470</option>
+                    <option value="2469">2469</option>
+                    <option value="2468">2468</option>
+                    <option value="2467">2467</option>
                   </select>
                 </div>
               </div>
@@ -1047,11 +1178,13 @@
               </select>
             </div>
 
+            <!-- กรอกอาชีพ (อื่นๆ) -->
             <div class="form-group hidden-field" id="occupationOtherGroup">
               <label for="occupationOther">กรุณาระบุอาชีพ</label>
               <input type="text" id="occupationOther" name="occupationOther" placeholder="กรุณาระบุอาชีพ">
             </div>
 
+            <!-- รายได้ต่อเดือน -->
             <div class="form-group">
               <label for="monthlyIncome" class="required-field">รายได้ต่อเดือน</label>
               <select id="monthlyIncome" name="monthlyIncome" required>
@@ -1064,7 +1197,7 @@
             </div>
           </div>
           
-          <!-- ข้อมูลสัตว์เลี้ยง -->
+          <!-- 2. ข้อมูลสัตว์เลี้ยง -->
           <div class="form-section">
             <h3 class="form-section-title">ข้อมูลสัตว์เลี้ยง</h3>
             
@@ -1113,9 +1246,10 @@
                     <div class="collapsible-content" id="brandCollapse">
                       <div class="collapsible-inner">
                         <div class="checkbox-group" id="brandCheckboxGroup">
-                          <!-- จะถูกเติมด้วย JavaScript -->
+                          <!-- Brand checkboxes will be populated by JavaScript -->
                         </div>
                         
+                        <!-- กล่องกรอกอื่นๆ สำหรับแบรนด์ -->
                         <div class="form-group hidden-field" id="brandOtherGroup" style="margin-top: 15px;">
                           <input type="text" id="currentBrandOther" name="currentBrandOther" placeholder="กรุณาระบุแบรนด์อาหารเม็ดที่ใช้">
                         </div>
@@ -1123,6 +1257,7 @@
                     </div>
                   </div>
                   
+                  <!-- แสดงรายการแบรนด์ที่เลือกไว้ -->
                   <div class="selected-items-preview" id="brandSelectedPreview"></div>
                 </div>
               </div>
@@ -1143,18 +1278,22 @@
               </div>
             </div>
 
+            <!-- กรุณาอัพโหลด -->
             <div class="form-group">
               <label for="receiptUpload">กรุณาอัพโหลดภาพถ่ายถุงอาหารเม็ดสำหรับแมว หรือสุนัขที่คุณใช้อยู่ปัจจุบัน</label>
               <div class="file-input-container">
                 <input type="file" id="receiptUpload" name="receiptUpload" accept="image/*" multiple onchange="previewUploadedImages(this)">
                 <span class="asterisk-note">รองรับไฟล์ภาพ เช่น JPG, PNG (สามารถเลือกได้ 1-5 รูป)</span>
               </div>
+              <!-- Container สำหรับแสดงรูปภาพหลายรูป -->
               <div id="uploadedImagesPreview" style="display: none; margin-top: 15px;">
                 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; max-width: 100%;"></div>
               </div>
+              <!-- แสดงจำนวนไฟล์ที่เลือก -->
               <div id="fileCount" style="margin-top: 8px; font-size: 0.9rem; color: var(--accent-color); display: none;"></div>
             </div>
 
+            <!-- เหตุผลที่ไม่เลือกซื้ออาหารสุนัขหรือแมว Buzz Netura -->
             <div class="form-group">
               <label>เหตุผลที่ไม่เลือกซื้ออาหารสุนัขหรือแมว Buzz Netura? (ตอบได้หลายข้อ)</label>
               
@@ -1208,6 +1347,7 @@
                       </div>
                     </div>
                     
+                    <!-- กล่องกรอกอื่นๆ สำหรับเหตุผล -->
                     <div class="form-group hidden-field" id="reasonOtherGroup" style="margin-top: 15px;">
                       <input type="text" id="reasonOther" name="reasonOther" placeholder="กรุณาระบุเหตุผลอื่นๆ">
                     </div>
@@ -1217,7 +1357,7 @@
             </div>
           </div>
           
-          <!-- พฤติกรรมผู้บริโภค -->
+          <!-- 3. ช่องทางในการรับข่าวสาร -->
           <div class="form-section">
             <h3 class="form-section-title">พฤติกรรมผู้บริโภค</h3>
             
@@ -1282,6 +1422,7 @@
                       </div>
                     </div>
                     
+                    <!-- กล่องกรอกอื่นๆ สำหรับช่องทาง -->
                     <div class="form-group hidden-field" id="channelOtherGroup" style="margin-top: 15px;">
                       <input type="text" id="channelOther" name="channelOther" placeholder="กรุณาระบุช่องทางอื่นๆ">
                     </div>
@@ -1310,6 +1451,7 @@
                   <select id="factor1" name="factor1" required onchange="updateFactorOptions()">
                     <option value="">-- กรุณาเลือก --</option>
                   </select>
+                  <!-- กล่องกรอกอื่นๆ สำหรับลำดับที่ 1 -->
                   <div class="form-group hidden-field" id="factor1OtherGroup" style="margin-top: 10px;">
                     <input type="text" id="factor1Other" name="factor1Other" placeholder="กรุณาระบุปัจจัยอื่นๆ สำหรับลำดับที่ 1">
                   </div>
@@ -1320,6 +1462,7 @@
                   <select id="factor2" name="factor2" required onchange="updateFactorOptions()">
                     <option value="">-- กรุณาเลือก --</option>
                   </select>
+                  <!-- กล่องกรอกอื่นๆ สำหรับลำดับที่ 2 -->
                   <div class="form-group hidden-field" id="factor2OtherGroup" style="margin-top: 10px;">
                     <input type="text" id="factor2Other" name="factor2Other" placeholder="กรุณาระบุปัจจัยอื่นๆ สำหรับลำดับที่ 2">
                   </div>
@@ -1330,6 +1473,7 @@
                   <select id="factor3" name="factor3" required onchange="updateFactorOptions()">
                     <option value="">-- กรุณาเลือก --</option>
                   </select>
+                  <!-- กล่องกรอกอื่นๆ สำหรับลำดับที่ 3 -->
                   <div class="form-group hidden-field" id="factor3OtherGroup" style="margin-top: 10px;">
                     <input type="text" id="factor3Other" name="factor3Other" placeholder="กรุณาระบุปัจจัยอื่นๆ สำหรับลำดับที่ 3">
                   </div>
@@ -1399,6 +1543,7 @@
                       </div>
                     </div>
                     
+                    <!-- กล่องกรอกอื่นๆ สำหรับการปรับปรุง -->
                     <div class="form-group hidden-field" id="improveOtherGroup" style="margin-top: 15px;">
                       <input type="text" id="improveOther" name="improveOther" placeholder="กรุณาระบุข้อเสนอแนะอื่นๆ">
                     </div>
@@ -1408,30 +1553,35 @@
             </div>
           </div>
           
-          <!-- ที่อยู่ในการจัดส่งผลิตภัณฑ์อาหารตัวอย่าง -->
+          <!-- 4. ที่อยู่ในการจัดส่งผลิตภัณฑ์อาหารตัวอย่าง -->
           <div class="form-section">
             <h3 class="form-section-title">ที่อยู่ในการจัดส่งผลิตภัณฑ์อาหารตัวอย่าง</h3>
             
+            <!-- บ้านเลขที่ -->
             <div class="form-group">
               <label for="houseNumber" class="required-field">บ้านเลขที่</label>
               <input type="text" id="houseNumber" name="houseNumber" required placeholder="กรุณากรอกบ้านเลขที่">
             </div>
             
+            <!-- ชื่อหมู่บ้าน/ชื่ออาคาร -->
             <div class="form-group">
               <label for="villageOrBuilding">ชื่อหมู่บ้าน/ชื่ออาคาร</label>
               <input type="text" id="villageOrBuilding" name="villageOrBuilding" placeholder="กรุณากรอกชื่อหมู่บ้านหรือชื่ออาคาร (ถ้ามี)">
             </div>
             
+            <!-- หมู่ที่ -->
             <div class="form-group">
               <label for="moo">หมู่ที่</label>
               <input type="text" id="moo" name="moo" placeholder="กรุณากรอกหมู่ที่ (ถ้ามี)">
             </div>
             
+            <!-- ซอย -->
             <div class="form-group">
               <label for="soi">ซอย</label>
               <input type="text" id="soi" name="soi" placeholder="กรุณากรอกซอย (ถ้ามี)">
             </div>
             
+            <!-- ถนน -->
             <div class="form-group">
               <label for="road">ถนน</label>
               <input type="text" id="road" name="road" placeholder="กรุณากรอกถนน (ถ้ามี)">
@@ -1443,6 +1593,7 @@
                   <label for="province" class="required-field">จังหวัด</label>
                   <select id="province" name="province" required onchange="loadDistricts()">
                     <option value="">-- กรุณาเลือก --</option>
+                    <!-- จะถูกเติมด้วย JavaScript -->
                   </select>
                 </div>
               </div>
@@ -1452,6 +1603,7 @@
                   <label for="district" class="required-field">อำเภอ</label>
                   <select id="district" name="district" required onchange="loadSubdistricts()" disabled>
                     <option value="">-- กรุณาเลือก --</option>
+                    <!-- จะถูกเติมด้วย JavaScript -->
                   </select>
                 </div>
               </div>
@@ -1463,6 +1615,7 @@
                   <label for="subdistrict" class="required-field">ตำบล</label>
                   <select id="subdistrict" name="subdistrict" required onchange="loadPostcode()" disabled>
                     <option value="">-- กรุณาเลือก --</option>
+                    <!-- จะถูกเติมด้วย JavaScript -->
                   </select>
                 </div>
               </div>
@@ -1472,13 +1625,14 @@
                   <label for="postcode" class="required-field">รหัสไปรษณีย์</label>
                   <select id="postcode" name="postcode" required disabled>
                     <option value="">-- กรุณาเลือก --</option>
+                    <!-- จะถูกเติมด้วย JavaScript -->
                   </select>
                 </div>
               </div>
             </div>
           </div>
           
-          <!-- ข้อมูลติดต่อ -->
+          <!-- 5. ข้อมูลติดต่อ -->
           <div class="form-section">
             <h3 class="form-section-title">ข้อมูลติดต่อ</h3>
             
@@ -1505,10 +1659,11 @@
             </div>
           </div>
           
-          <!-- เงื่อนไขและข้อตกลง -->
+          <!-- 6. เงื่อนไขและข้อตกลง Section -->
           <div class="form-section">
             <h3 class="form-section-title">เงื่อนไขและข้อตกลง</h3>
             
+            <!-- กล่องที่ 1 -->
             <div class="terms-box" style="padding: 20px; margin-bottom: 15px; border-radius: 12px; background-color: #07476c; border-left: 4px solid #3db3e3;">
               <div style="margin-bottom: 15px;">
                 ยอมรับ เงื่อนไขและข้อกำหนดการรับอาหารแมวหรือสุนัข Buzz Netura Holistic Grain Free ขนาดทดลองฟรี
@@ -1527,18 +1682,22 @@
               </div>
             </div>
             
+            <!-- กล่องที่ 2 (รวมกล่อง 3, 4, 5) -->
             <div class="terms-box" style="padding: 20px; margin-bottom: 15px; border-radius: 12px; background-color: #07476c; border-left: 4px solid #3db3e3;">
+              <!-- กล่อง 3 - ไม่มี checkbox -->
               <div style="margin-bottom: 20px; color: #ffffff; line-height: 1.5; font-size: 0.95rem;">
                 บริษัท ออสแทม กู๊ดส์ จำกัด (บริษัทฯ) ขอความยินยอมจากท่านในการใช้ข้อมูลส่วนบุคคล (เช่น ข้อมูลเฉพาะตัวบุคคล ข้อมูลเกี่ยวกับคุณลักษณะของบุคคล ข้อมูลการติดต่อ ข้อมูลพฤติกรรมหรือข้อมูลเกี่ยวกับสินค้าและบริการ) เพิ่มเติมจากวัตถุประสงค์เพื่อจัดส่งสินค้าตัวอย่าง ตาม พ.ร.บ.คุ้มครองข้อมูลส่วนบุคคล ดังนี้
               </div>
               
+              <!-- กล่อง 4 - มี checkbox -->
               <div style="display: flex; align-items: flex-start; margin-bottom: 15px; padding: 0;">
                 <input type="checkbox" id="terms2" name="terms2" style="margin-right: 12px; margin-top: 4px; width: 20px; height: 20px;">
                 <label for="terms2" style="flex: 1; color: #ffffff; line-height: 1.5; font-weight: 400; font-size: 0.95rem;">
-                  ยินยอมให้บริษัทฯ เก็บรวบรวมและใช้ข้อมูลเพื่อสื่อสารการตลาด ตลอดจนส่งเสริมการขาย ผ่านช่องทาง SMS, โซเชียลมีเดีย, อีเมล, ไปรษณีย์ หรือช่องทางการติดต่ออื่นๆ เพื่อนำเสนอข่าวสาร โปรโมชัน ข้อเสนอพิเศษ หรือ แคมเปญทางการตลาด
+                    ยินยอมให้บริษัทฯ เก็บรวบรวมและใช้ข้อมูลเพื่อสื่อสารการตลาด ตลอดจนส่งเสริมการขาย ผ่านช่องทาง SMS, โซเชียลมีเดีย, อีเมล, ไปรษณีย์ หรือช่องทางการติดต่ออื่นๆ เพื่อนำเสนอข่าวสาร โปรโมชัน ข้อเสนอพิเศษ หรือ แคมเปญทางการตลาด
                 </label>
               </div>
               
+              <!-- กล่อง 5 - มี checkbox -->
               <div style="display: flex; align-items: flex-start; margin-bottom: 20px; padding: 0;">
                 <input type="checkbox" id="terms3" name="terms3" style="margin-right: 12px; margin-top: 4px; width: 20px; height: 20px;">
                 <label for="terms3" style="flex: 1; color: #ffffff; line-height: 1.5; font-weight: 400; font-size: 0.95rem;">
@@ -1546,10 +1705,12 @@
                 </label>
               </div>
               
+              <!-- เส้นคั่นบาง ๆ -->
               <div style="height: 1px; background-color: rgba(255, 255, 255, 0.1); margin: 15px 0;"></div>
               
+              <!-- ข้อความด้านล่าง -->
               <div style="color: #ddd; font-size: 0.9rem; font-style: italic; line-height: 1.5;">
-                โปรดทราบ: การให้ความยินยอมข้างต้นเป็นไปโดยสมัครใจ และไม่มีผลต่อการรับสินค้าตัวอย่าง ท่านสามารถถอนความยินยอม เพิกถอนได้ โดยติดต่อ inquiries@buzzpetsfood.com ทั้งนี้ท่านสามารถศึกษา <a href="https://drive.google.com/file/d/19sAPkedNiCssaEXa0QvurxyX8dJcn08_/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="color: #00b7ff; text-decoration: underline;">นโยบายข้อมูลส่วนบุคคล</a>
+                    โปรดทราบ: การให้ความยินยอมข้างต้นเป็นไปโดยสมัครใจ และไม่มีผลต่อการรับสินค้าตัวอย่าง ท่านสามารถถอนความยินยอม เพิกถอนได้ โดยติดต่อ inquiries@buzzpetsfood.com ทั้งนี้ท่านสามารถศึกษา <a href="https://drive.google.com/file/d/19sAPkedNiCssaEXa0QvurxyX8dJcn08_/view?usp=sharing" target="_blank" rel="noopener noreferrer" style="color: #00b7ff; text-decoration: underline;">นโยบายข้อมูลส่วนบุคคล</a>
               </div>
             </div>
           </div>
@@ -1574,508 +1735,472 @@
   </div>
 
   <script>
-    // กำหนดค่า Supabase
-    const SUPABASE_URL = 'https://mcsixclxwxvfyyddrzmh.supabase.co'
-    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0NjA1MzgsImV4cCI6MjA2NzAzNjUzOH0.beq2VeTmn31QRPr5SmJZ1A5vc8PxWXugT89AVukwqm4'
-    const EDGE_FUNCTION_URL = `${SUPABASE_URL}/functions/v1/survey-api`
-
-    // สร้าง Supabase client
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY)
-
-    // Global variables
-    let postCodeData = []
+    // ============== Configuration ==============
+    // **ใส่ URL ของ Supabase Edge Function ที่คุณ deploy แล้ว**
+    const SUPABASE_FUNCTION_URL = 'https://your-project.supabase.co/functions/v1/survey-api';
     
-    // ข้อมูลแบรนด์อาหารสำหรับสัตว์เลี้ยง
+    // Global variables
+    let postCodeData = [];
+    
+    // Updated pet food brands based on pet type
     let petFoodBrands = {
       แมว: [
-        'Acana', 'AvoDerm', 'Cat n Joy', 'Clover', 'Hill\'s Science Diet', 'Kaniva',
-        'Lifemate', 'Maxima', 'Me-O', 'Me-O Gold', 'Mr.Vet', 'Nekko', 'Orijen',
-        'Ostech', 'Petheria', 'Pramy', 'ProWild', 'Purina ONE', 'Purina Pro Plan',
-        'Royal Canin', 'SmartHeart', 'SmartHeart Gold', 'Solid Gold', 'Taste of the WILD',
-        'Wellness CORE', 'Whiskas', 'ไม่ใช้อาหารเม็ด', 'อื่นๆ'
+        'Acana',
+        'AvoDerm',
+        'Cat n Joy',
+        'Clover',
+        'Hill\'s Science Diet',
+        'Kaniva',
+        'Lifemate',
+        'Maxima',
+        'Me-O',
+        'Me-O Gold',
+        'Mr.Vet',
+        'Nekko',
+        'Orijen',
+        'Ostech',
+        'Petheria',
+        'Pramy',
+        'ProWild',
+        'Purina ONE',
+        'Purina Pro Plan',
+        'Royal Canin',
+        'SmartHeart',
+        'SmartHeart Gold',
+        'Solid Gold',
+        'Taste of the WILD',
+        'Wellness CORE',
+        'Whiskas',
+        'ไม่ใช้อาหารเม็ด',
+        'อื่นๆ'
       ],
       สุนัข: [
-        'Acana', 'AvoDerm', 'Deserve', 'Dog Days', 'Dog n joy', 'Earthborn', 'Happy Dog',
-        'Hill\'s Science Diet', 'Jerhigh', 'Kaniva', 'LuvCare', 'Maxima', 'Mr.Vet',
-        'Orijen', 'Ostech', 'Pawdy', 'Pedigree', 'Pinnacle', 'PRAMA Delicacy', 'ProWild',
-        'Purina Pro Plan', 'Royal Canin', 'SmartHeart', 'Solid Gold', 'Taste of the WILD',
-        'Wellness CORE', 'ไม่ใช้อาหารเม็ด', 'อื่นๆ'
+        'Acana',
+        'AvoDerm',
+        'Deserve',
+        'Dog Days',
+        'Dog n joy',
+        'Earthborn',
+        'Happy Dog',
+        'Hill\'s Science Diet',
+        'Jerhigh',
+        'Kaniva',
+        'LuvCare',
+        'Maxima',
+        'Mr.Vet',
+        'Orijen',
+        'Ostech',
+        'Pawdy',
+        'Pedigree',
+        'Pinnacle',
+        'PRAMA Delicacy',
+        'ProWild',
+        'Purina Pro Plan',
+        'Royal Canin',
+        'SmartHeart',
+        'Solid Gold',
+        'Taste of the WILD',
+        'Wellness CORE',
+        'ไม่ใช้อาหารเม็ด',
+        'อื่นๆ'
       ]
-    }
+    };
 
     let factorOptions = [
-      'ราคาคุ้มค่า', 'อาหารสัตว์เลี้ยงระดับ Holistic Grain Free', 'แบรนด์เป็นที่รู้จัก',
-      'ความน่าเชื่อถือของแบรนด์', 'สัตวแพทย์แนะนำ', 'ถุง/แพ็คเกจสวยงาม น่าซื้อ',
-      'อาหารที่สัตว์เลี้ยงชอบทาน ทานง่าย', 'คุณภาพวัตถุดิบระดับสูง',
-      'มีรีวิวที่ดีจาก อินฟลูเอ็นเซอร์, กลุ่มสัตว์เลี้ยงบนโลกออนไลน์',
-      'มีโปรโมชัน, ของแถมที่น่าสนใจ', 'สินค้ามีพรีเซนเตอร์/ดารา', 'อื่นๆ'
-    ]
+        'ราคาคุ้มค่า',
+        'อาหารสัตว์เลี้ยงระดับ Holistic Grain Free',
+        'แบรนด์เป็นที่รู้จัก',
+        'ความน่าเชื่อถือของแบรนด์',
+        'สัตวแพทย์แนะนำ',
+        'ถุง/แพ็คเกจสวยงาม น่าซื้อ',
+        'อาหารที่สัตว์เลี้ยงชอบทาน ทานง่าย',
+        'คุณภาพวัตถุดิบระดับสูง',
+        'มีรีวิวที่ดีจาก อินฟลูเอ็นเซอร์, กลุ่มสัตว์เลี้ยงบนโลกออนไลน์',
+        'มีโปรโมชัน, ของแถมที่น่าสนใจ',
+        'สินค้ามีพรีเซนเตอร์/ดารา',
+        'อื่นๆ'
+    ];
     
-    // โหลดข้อมูลเมื่อหน้าเว็บพร้อม
-    window.onload = function() {
-      loadInitialData()
-      setupEventListeners()
-      initializeBirthYearOptions()
-      initializeBirthDayOptions()
-      loadFactorOptions()
+    // ============== API Functions ==============
+    async function callSupabaseAPI(action, data = null) {
+      const url = `${SUPABASE_FUNCTION_URL}?action=${action}`;
       
-      // เริ่มต้นการนับที่เลือก
-      updateSelectedCount('reasonNotBuyBuzz', 'reasonSelectedCount')
-      updateSelectedCount('marketingChannelMultiple', 'channelSelectedCount')
-      updateSelectedCount('improvementSuggestions', 'improveSelectedCount')
-      updateSelectedCount('currentBrandMultiple', 'brandSelectedCount')
+      const options = {
+        method: data ? 'POST' : 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      };
       
-      setupBrandOtherListener()
+      if (data) {
+        options.body = JSON.stringify(data);
+      }
       
-      // ซ่อนข้อความข้อผิดพลาดในตอนเริ่มต้น
-      document.getElementById('errorMessages').style.display = 'none'
-      
-      // เพิ่ม event listener สำหรับฟอร์ม
-      document.getElementById('surveyForm').addEventListener('submit', function(e) {
-        e.preventDefault()
-        submitForm()
-      })
-    }
-
-    // โหลดข้อมูลเริ่มต้น
-    async function loadInitialData() {
       try {
-        const response = await fetch(`${EDGE_FUNCTION_URL}?action=getPostCodeData`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-          }
-        })
+        const response = await fetch(url, options);
         
-        if (!response.ok) throw new Error('Failed to load postcode data')
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
         
-        const data = await response.json()
-        onPostCodeDataReceived(data)
+        const result = await response.json();
+        return result;
       } catch (error) {
-        console.error('Error loading initial data:', error)
-        showErrorMessage('ไม่สามารถโหลดข้อมูลได้ กรุณาลองใหม่อีกครั้ง')
+        console.error('Error calling Supabase API:', error);
+        throw error;
       }
     }
+    
+    // ============== Initialization ==============
+    window.onload = function() {
+      // Try to fetch postcode data
+      callSupabaseAPI('getPostCodeData')
+        .then(data => {
+          onPostCodeDataReceived(data);
+        })
+        .catch(error => {
+          console.error("Error loading postcode data:", error);
+          showError('ไม่สามารถโหลดข้อมูลรหัสไปรษณีย์ได้ กรุณาลองใหม่อีกครั้ง');
+        });
+      
+      // โหลดตัวเลือกปัจจัย
+      loadFactorOptions();
+      
+      // Initialize selected counts
+      updateSelectedCount('reasonNotBuyBuzz', 'reasonSelectedCount');
+      updateSelectedCount('marketingChannelMultiple', 'channelSelectedCount');
+      updateSelectedCount('improvementSuggestions', 'improveSelectedCount');
+      updateSelectedCount('currentBrandMultiple', 'brandSelectedCount');
+      
+      // Setup event listeners
+      setupBrandOtherListener();
+      
+      // Add validation event listeners
+      document.getElementById('phone').addEventListener('input', validatePhone);
+      document.getElementById('email').addEventListener('input', validateEmail);
+      
+      // Ensure error messages div is initially hidden
+      document.getElementById('errorMessages').style.display = 'none';
+      
+      // Add submit event listener to form
+      document.getElementById('surveyForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        submitForm();
+      });
+    };
 
-    // ตั้งค่า Event Listeners
-    function setupEventListeners() {
-      document.getElementById('phone').addEventListener('input', validatePhone)
-      document.getElementById('email').addEventListener('input', validateEmail)
+    function showError(message) {
+      const errorDiv = document.getElementById('errorMessages');
+      errorDiv.innerHTML = `<p style="color: var(--error-color); font-weight: bold; text-align: center; padding: 15px; background-color: #ffebee; border-radius: var(--border-radius); border-left: 4px solid var(--error-color);">${message}</p>`;
+      errorDiv.style.display = 'block';
+      errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
     }
 
-    // เริ่มต้นตัวเลือกปีเกิด
-    function initializeBirthYearOptions() {
-      const birthYearSelect = document.getElementById('birthYear')
-      for (let year = 2567; year >= 2467; year--) {
-        const option = document.createElement('option')
-        option.value = year.toString()
-        option.text = year.toString()
-        birthYearSelect.appendChild(option)
-      }
-    }
-
-    // เริ่มต้นตัวเลือกวันเกิด
-    function initializeBirthDayOptions() {
-      const birthDaySelect = document.getElementById('birthDay')
-      for (let day = 1; day <= 31; day++) {
-        const option = document.createElement('option')
-        option.value = day.toString()
-        option.text = day.toString()
-        birthDaySelect.appendChild(option)
-      }
-    }
-
-    // แสดงข้อความข้อผิดพลาด
-    function showErrorMessage(message) {
-      const errorDiv = document.getElementById('errorMessages')
-      errorDiv.innerHTML = `<p style="color: var(--error-color); font-weight: bold; text-align: center; padding: 15px; background-color: #ffebee; border-radius: var(--border-radius); border-left: 4px solid var(--error-color);">${message}</p>`
-      errorDiv.style.display = 'block'
-      errorDiv.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    }
-
-    // จัดการข้อมูลรหัสไปรษณีย์ที่ได้รับ
-    function onPostCodeDataReceived(data) {
-      postCodeData = data
-      
-      // เติมข้อมูลจังหวัดใน dropdown
-      const provinces = [...new Set(data.map(item => item[3]))].sort()
-      const provinceSelect = document.getElementById('province')
-      
-      provinces.forEach(province => {
-        const option = document.createElement('option')
-        option.value = province
-        option.text = province
-        provinceSelect.appendChild(option)
-      })
-    }
-
-    // โหลดอำเภอตามจังหวัดที่เลือก
-    function loadDistricts() {
-      const provinceValue = document.getElementById('province').value
-      const districtSelect = document.getElementById('district')
-      const subdistrictSelect = document.getElementById('subdistrict')
-      const postcodeSelect = document.getElementById('postcode')
-      
-      // รีเซ็ตและปิดการใช้งาน dropdown ที่ขึ้นต่อกัน
-      districtSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>'
-      subdistrictSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>'
-      postcodeSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>'
-      
-      subdistrictSelect.disabled = true
-      postcodeSelect.disabled = true
-      
-      if (!provinceValue) {
-        districtSelect.disabled = true
-        return
-      }
-      
-      // กรองอำเภอตามจังหวัดที่เลือก
-      const districts = [...new Set(
-        postCodeData
-          .filter(item => item[3] === provinceValue)
-          .map(item => item[2])
-      )].sort()
-      
-      // เติมข้อมูลอำเภอใน dropdown
-      districts.forEach(district => {
-        const option = document.createElement('option')
-        option.value = district
-        option.text = district
-        districtSelect.appendChild(option)
-      })
-      
-      districtSelect.disabled = false
-    }
-
-    // โหลดตำบลตามอำเภอที่เลือก
-    function loadSubdistricts() {
-      const provinceValue = document.getElementById('province').value
-      const districtValue = document.getElementById('district').value
-      const subdistrictSelect = document.getElementById('subdistrict')
-      const postcodeSelect = document.getElementById('postcode')
-      
-      // รีเซ็ตและปิดการใช้งาน dropdown ที่ขึ้นต่อกัน
-      subdistrictSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>'
-      postcodeSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>'
-      
-      postcodeSelect.disabled = true
-      
-      if (!districtValue) {
-        subdistrictSelect.disabled = true
-        return
-      }
-      
-      // กรองตำบลตามจังหวัดและอำเภอที่เลือก
-      const subdistricts = [...new Set(
-        postCodeData
-          .filter(item => item[3] === provinceValue && item[2] === districtValue)
-          .map(item => item[1])
-      )].sort()
-      
-      // เติมข้อมูลตำบลใน dropdown
-      subdistricts.forEach(subdistrict => {
-        const option = document.createElement('option')
-        option.value = subdistrict
-        option.text = subdistrict
-        subdistrictSelect.appendChild(option)
-      })
-      
-      subdistrictSelect.disabled = false
-    }
-
-    // โหลดรหัสไปรษณีย์ตามตำบลที่เลือก
-    function loadPostcode() {
-      const provinceValue = document.getElementById('province').value
-      const districtValue = document.getElementById('district').value
-      const subdistrictValue = document.getElementById('subdistrict').value
-      const postcodeSelect = document.getElementById('postcode')
-      
-      // รีเซ็ตรหัสไปรษณีย์ dropdown
-      postcodeSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>'
-      
-      if (!subdistrictValue) {
-        postcodeSelect.disabled = true
-        return
-      }
-      
-      // กรองรหัสไปรษณีย์ตามจังหวัด อำเภอ และตำบลที่เลือก
-      const postcodes = [...new Set(
-        postCodeData
-          .filter(item => 
-            item[3] === provinceValue && 
-            item[2] === districtValue && 
-            item[1] === subdistrictValue
-          )
-          .map(item => item[0])
-      )].sort()
-      
-      // เติมข้อมูลรหัสไปรษณีย์ใน dropdown
-      postcodes.forEach(postcode => {
-        const option = document.createElement('option')
-        option.value = postcode
-        option.text = postcode
-        postcodeSelect.appendChild(option)
-      })
-      
-      postcodeSelect.disabled = false
-    }
-
-    // อัปเดตรายการแบรนด์และตัวเลือกสินค้าตัวอย่างตามประเภทสัตว์เลี้ยง
+    // Updated function to load brands based on pet type and also update sample options
     function updatePetBrandsAndSampleOptions() {
-      const petType = document.getElementById('petType').value
-      updateBrandList(petType)
-      updateSampleOptions()
+      const petType = document.getElementById('petType').value;
+      
+      // Update brand list
+      updateBrandList(petType);
+      
+      // Update sample product options
+      updateSampleOptions();
     }
 
-    // อัปเดตรายการแบรนด์ตามประเภทสัตว์เลี้ยงที่เลือก
+    // Function to update brand list based on selected pet type
     function updateBrandList(petType) {
-      const brandCheckboxGroup = document.getElementById('brandCheckboxGroup')
-      brandCheckboxGroup.innerHTML = ''
+      const brandCheckboxGroup = document.getElementById('brandCheckboxGroup');
+      brandCheckboxGroup.innerHTML = ''; // Clear existing checkboxes
       
-      let brandsToShow = []
+      let brandsToShow = [];
       
       if (petType === 'แมว') {
-        brandsToShow = [...petFoodBrands.แมว]
+        brandsToShow = [...petFoodBrands.แมว];
       } else if (petType === 'สุนัข') {
-        brandsToShow = [...petFoodBrands.สุนัข]
+        brandsToShow = [...petFoodBrands.สุนัข];
       } else if (petType === 'สุนัขและแมว') {
-        const combinedBrands = [...petFoodBrands.แมว, ...petFoodBrands.สุนัข]
-        let uniqueBrands = [...new Set(combinedBrands)]
+        // Combine both lists and remove duplicates
+        const combinedBrands = [...petFoodBrands.แมว, ...petFoodBrands.สุนัข];
+        let uniqueBrands = [...new Set(combinedBrands)];
         
-        const specialItems = ['ไม่ใช้อาหารเม็ด', 'อื่นๆ']
-        const regularBrands = uniqueBrands.filter(brand => !specialItems.includes(brand))
-        const foundSpecialItems = specialItems.filter(item => uniqueBrands.includes(item))
+        // Remove special items for sorting
+        const specialItems = ['ไม่ใช้อาหารเม็ด', 'อื่นๆ'];
+        const regularBrands = uniqueBrands.filter(brand => !specialItems.includes(brand));
+        const foundSpecialItems = specialItems.filter(item => uniqueBrands.includes(item));
         
-        brandsToShow = [...regularBrands.sort(), ...foundSpecialItems]
+        // Sort regular brands and add special items at the end in correct order
+        brandsToShow = [...regularBrands.sort(), ...foundSpecialItems];
       }
       
-      // สร้าง checkbox items สำหรับแบรนด์
+      // Create checkbox items for brands
       brandsToShow.forEach((brand, index) => {
-        const checkboxItem = document.createElement('div')
-        checkboxItem.className = 'checkbox-item'
+        const checkboxItem = document.createElement('div');
+        checkboxItem.className = 'checkbox-item';
         
-        const checkboxId = `brand${index + 1}`
+        const checkboxId = `brand${index + 1}`;
         const onchangeAction = brand === 'อื่นๆ' ? 
           `toggleBrandOther(); updateSelectedCount('currentBrandMultiple', 'brandSelectedCount');` :
-          `updateSelectedCount('currentBrandMultiple', 'brandSelectedCount')`
+          `updateSelectedCount('currentBrandMultiple', 'brandSelectedCount')`;
         
         checkboxItem.innerHTML = `
           <input type="checkbox" id="${checkboxId}" name="currentBrandMultiple" value="${brand}" onchange="${onchangeAction}">
           <label for="${checkboxId}">${brand}</label>
-        `
+        `;
         
-        brandCheckboxGroup.appendChild(checkboxItem)
-      })
+        brandCheckboxGroup.appendChild(checkboxItem);
+      });
       
-      // รีเซ็ตการนับแบรนด์ที่เลือก
-      updateSelectedCount('currentBrandMultiple', 'brandSelectedCount')
+      // Reset brand selection count
+      updateSelectedCount('currentBrandMultiple', 'brandSelectedCount');
       
-      // เคลียร์ brand preview
-      document.getElementById('brandSelectedPreview').innerHTML = ''
+      // Clear brand preview
+      document.getElementById('brandSelectedPreview').innerHTML = '';
       
-      // ซ่อน input สำหรับแบรนด์อื่นๆ
-      document.getElementById('brandOtherGroup').classList.add('hidden-field')
-      document.getElementById('currentBrandOther').value = ''
+      // Hide other brand input if visible
+      document.getElementById('brandOtherGroup').classList.add('hidden-field');
+      document.getElementById('currentBrandOther').value = '';
     }
 
     // โหลดตัวเลือกปัจจัยสำหรับ dropdown ทั้ง 3
     function loadFactorOptions() {
-      const factorSelects = ['factor1', 'factor2', 'factor3']
+      const factorSelects = ['factor1', 'factor2', 'factor3'];
       
       factorSelects.forEach(selectId => {
-        const select = document.getElementById(selectId)
-        select.innerHTML = '<option value="">-- กรุณาเลือก --</option>'
+        const select = document.getElementById(selectId);
+        select.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
         
         factorOptions.forEach(option => {
-          const optionElement = document.createElement('option')
-          optionElement.value = option
-          optionElement.text = option
-          select.appendChild(optionElement)
-        })
-      })
+          const optionElement = document.createElement('option');
+          optionElement.value = option;
+          optionElement.text = option;
+          select.appendChild(optionElement);
+        });
+      });
     }
 
     // อัปเดตตัวเลือกปัจจัยเมื่อมีการเลือก
     function updateFactorOptions() {
-      const factor1 = document.getElementById('factor1').value
-      const factor2 = document.getElementById('factor2').value
-      const factor3 = document.getElementById('factor3').value
+      const factor1 = document.getElementById('factor1').value;
+      const factor2 = document.getElementById('factor2').value;
+      const factor3 = document.getElementById('factor3').value;
       
-      const selectedValues = [factor1, factor2, factor3].filter(val => val !== '')
+      const selectedValues = [factor1, factor2, factor3].filter(val => val !== '');
       
       // ตรวจสอบและแสดงช่องกรอก "อื่นๆ" สำหรับแต่ละลำดับ
-      const factor1OtherGroup = document.getElementById('factor1OtherGroup')
+      // ลำดับที่ 1
+      const factor1OtherGroup = document.getElementById('factor1OtherGroup');
       if (factor1 === 'อื่นๆ') {
-        factor1OtherGroup.classList.remove('hidden-field')
+        factor1OtherGroup.classList.remove('hidden-field');
         setTimeout(() => {
-          factor1OtherGroup.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          document.getElementById('factor1Other').focus()
-        }, 300)
+          factor1OtherGroup.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          document.getElementById('factor1Other').focus();
+        }, 300);
       } else {
-        factor1OtherGroup.classList.add('hidden-field')
-        document.getElementById('factor1Other').value = ''
+        factor1OtherGroup.classList.add('hidden-field');
+        document.getElementById('factor1Other').value = '';
       }
       
-      const factor2OtherGroup = document.getElementById('factor2OtherGroup')
+      // ลำดับที่ 2
+      const factor2OtherGroup = document.getElementById('factor2OtherGroup');
       if (factor2 === 'อื่นๆ') {
-        factor2OtherGroup.classList.remove('hidden-field')
+        factor2OtherGroup.classList.remove('hidden-field');
         setTimeout(() => {
-          factor2OtherGroup.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          document.getElementById('factor2Other').focus()
-        }, 300)
+          factor2OtherGroup.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          document.getElementById('factor2Other').focus();
+        }, 300);
       } else {
-        factor2OtherGroup.classList.add('hidden-field')
-        document.getElementById('factor2Other').value = ''
+        factor2OtherGroup.classList.add('hidden-field');
+        document.getElementById('factor2Other').value = '';
       }
       
-      const factor3OtherGroup = document.getElementById('factor3OtherGroup')
+      // ลำดับที่ 3
+      const factor3OtherGroup = document.getElementById('factor3OtherGroup');
       if (factor3 === 'อื่นๆ') {
-        factor3OtherGroup.classList.remove('hidden-field')
+        factor3OtherGroup.classList.remove('hidden-field');
         setTimeout(() => {
-          factor3OtherGroup.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          document.getElementById('factor3Other').focus()
-        }, 300)
+          factor3OtherGroup.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          document.getElementById('factor3Other').focus();
+        }, 300);
       } else {
-        factor3OtherGroup.classList.add('hidden-field')
-        document.getElementById('factor3Other').value = ''
+        factor3OtherGroup.classList.add('hidden-field');
+        document.getElementById('factor3Other').value = '';
       }
       
       // ปิดกั้นตัวเลือกที่ถูกเลือกแล้วใน dropdown อื่นๆ
-      const factorSelects = ['factor1', 'factor2', 'factor3']
+      const factorSelects = ['factor1', 'factor2', 'factor3'];
       
       factorSelects.forEach(selectId => {
-        const select = document.getElementById(selectId)
-        const currentValue = select.value
+        const select = document.getElementById(selectId);
+        const currentValue = select.value;
         
-        select.innerHTML = '<option value="">-- กรุณาเลือก --</option>'
+        // เก็บตัวเลือกปัจจุบัน
+        select.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
         
         factorOptions.forEach(option => {
-          const optionElement = document.createElement('option')
-          optionElement.value = option
-          optionElement.text = option
+          const optionElement = document.createElement('option');
+          optionElement.value = option;
+          optionElement.text = option;
           
+          // ปิดกั้นตัวเลือกที่ถูกเลือกแล้วในช่องอื่น
           if (selectedValues.includes(option) && currentValue !== option) {
-            optionElement.disabled = true
-            optionElement.text += ' (เลือกแล้ว)'
+            optionElement.disabled = true;
+            optionElement.text += ' (เลือกแล้ว)';
           }
           
-          select.appendChild(optionElement)
-        })
+          select.appendChild(optionElement);
+        });
         
-        select.value = currentValue
-      })
+        // คืนค่าเดิม
+        select.value = currentValue;
+      });
     }
 
     // แสดง/ซ่อนช่องกรอกอาชีพอื่นๆ
     function toggleOccupationOther() {
-      const occupation = document.getElementById('occupation').value
-      const otherGroup = document.getElementById('occupationOtherGroup')
+      const occupation = document.getElementById('occupation').value;
+      const otherGroup = document.getElementById('occupationOtherGroup');
       
       if (occupation === 'อื่น ๆ') {
-        otherGroup.classList.remove('hidden-field')
-        document.getElementById('occupationOther').required = true
+        otherGroup.classList.remove('hidden-field');
+        document.getElementById('occupationOther').required = true;
+        // เพิ่ม animation และ scroll ไปยังช่องกรอก
         setTimeout(() => {
-          otherGroup.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          document.getElementById('occupationOther').focus()
-        }, 300)
+          otherGroup.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          // Focus ไปที่ input field
+          document.getElementById('occupationOther').focus();
+        }, 300);
       } else {
-        otherGroup.classList.add('hidden-field')
-        document.getElementById('occupationOther').required = false
-        document.getElementById('occupationOther').value = ''
+        otherGroup.classList.add('hidden-field');
+        document.getElementById('occupationOther').required = false;
+        document.getElementById('occupationOther').value = '';
       }
     }
 
     // แสดง/ซ่อนช่องกรอกแบรนด์อื่นๆ
     function toggleBrandOther() {
-      const isChecked = document.querySelector('input[name="currentBrandMultiple"][value="อื่นๆ"]').checked
-      const otherGroup = document.getElementById('brandOtherGroup')
+      const isChecked = document.querySelector('input[name="currentBrandMultiple"][value="อื่นๆ"]').checked;
+      const otherGroup = document.getElementById('brandOtherGroup');
       
       if (isChecked) {
-        otherGroup.classList.remove('hidden-field')
+        otherGroup.classList.remove('hidden-field');
+        // เพิ่ม animation และ scroll ไปยังช่องกรอก
         setTimeout(() => {
-          otherGroup.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          document.getElementById('currentBrandOther').focus()
-        }, 300)
+          otherGroup.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          // Focus ไปที่ input field
+          document.getElementById('currentBrandOther').focus();
+        }, 300);
       } else {
-        otherGroup.classList.add('hidden-field')
-        document.getElementById('currentBrandOther').value = ''
+        otherGroup.classList.add('hidden-field');
+        // ล้างเฉพาะช่องกรอกข้อความ ไม่ลบค่า "อื่นๆ" ออกจาก checkbox
+        document.getElementById('currentBrandOther').value = '';
       }
       
-      updateBrandPreview()
+      // อัปเดต preview
+      updateBrandPreview();
     }
 
     // แสดง/ซ่อนช่องกรอกเหตุผลอื่นๆ
     function toggleReasonOther() {
-      const isChecked = document.getElementById('reason9').checked
-      const otherGroup = document.getElementById('reasonOtherGroup')
+      const isChecked = document.getElementById('reason9').checked;
+      const otherGroup = document.getElementById('reasonOtherGroup');
       
       if (isChecked) {
-        otherGroup.classList.remove('hidden-field')
+        otherGroup.classList.remove('hidden-field');
+        // เพิ่ม animation และ scroll ไปยังช่องกรอก
         setTimeout(() => {
-          otherGroup.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          document.getElementById('reasonOther').focus()
-        }, 300)
+          otherGroup.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          // Focus ไปที่ input field
+          document.getElementById('reasonOther').focus();
+        }, 300);
       } else {
-        otherGroup.classList.add('hidden-field')
-        document.getElementById('reasonOther').value = ''
+        otherGroup.classList.add('hidden-field');
+        document.getElementById('reasonOther').value = '';
       }
     }
 
     // แสดง/ซ่อนช่องกรอกช่องทางอื่นๆ
     function toggleChannelOther() {
-      const isChecked = document.getElementById('channel11').checked
-      const otherGroup = document.getElementById('channelOtherGroup')
+      const isChecked = document.getElementById('channel11').checked;
+      const otherGroup = document.getElementById('channelOtherGroup');
       
       if (isChecked) {
-        otherGroup.classList.remove('hidden-field')
+        otherGroup.classList.remove('hidden-field');
+        // เพิ่ม animation และ scroll ไปยังช่องกรอก
         setTimeout(() => {
-          otherGroup.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          document.getElementById('channelOther').focus()
-        }, 300)
+          otherGroup.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          // Focus ไปที่ input field
+          document.getElementById('channelOther').focus();
+        }, 300);
       } else {
-        otherGroup.classList.add('hidden-field')
-        document.getElementById('channelOther').value = ''
+        otherGroup.classList.add('hidden-field');
+        document.getElementById('channelOther').value = '';
       }
     }
 
     // แสดง/ซ่อนช่องกรอกข้อเสนอแนะอื่นๆ
     function toggleImproveOther() {
-      const isChecked = document.getElementById('improve11').checked
-      const otherGroup = document.getElementById('improveOtherGroup')
+      const isChecked = document.getElementById('improve11').checked;
+      const otherGroup = document.getElementById('improveOtherGroup');
       
       if (isChecked) {
-        otherGroup.classList.remove('hidden-field')
+        otherGroup.classList.remove('hidden-field');
+        // เพิ่ม animation และ scroll ไปยังช่องกรอก
         setTimeout(() => {
-          otherGroup.scrollIntoView({ behavior: 'smooth', block: 'center' })
-          document.getElementById('improveOther').focus()
-        }, 300)
+          otherGroup.scrollIntoView({ 
+            behavior: 'smooth', 
+            block: 'center' 
+          });
+          // Focus ไปที่ input field
+          document.getElementById('improveOther').focus();
+        }, 300);
       } else {
-        otherGroup.classList.add('hidden-field')
-        document.getElementById('improveOther').value = ''
+        otherGroup.classList.add('hidden-field');
+        document.getElementById('improveOther').value = '';
       }
     }
 
     // อัปเดตตัวเลือกสินค้าตัวอย่างตามประเภทสัตว์เลี้ยง
     function updateSampleOptions() {
-      const petType = document.getElementById('petType').value
-      const sampleSelect = document.getElementById('sampleProduct')
+      const petType = document.getElementById('petType').value;
+      const sampleSelect = document.getElementById('sampleProduct');
       
-      sampleSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>'
+      // เคลียร์ตัวเลือกเดิม
+      sampleSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
       
       if (petType === 'แมว') {
         const catOptions = [
           'Fish & Chicken Formula',
           'Salmon Formula',
           'Whitefish, Herring & Chicken Formula'
-        ]
+        ];
         
         catOptions.forEach(option => {
-          const optionElement = document.createElement('option')
-          optionElement.value = option
-          optionElement.text = option + ' (อาหารแมว)'
-          sampleSelect.appendChild(optionElement)
-        })
+          const optionElement = document.createElement('option');
+          optionElement.value = option;
+          optionElement.text = option + ' (อาหารแมว)';
+          sampleSelect.appendChild(optionElement);
+        });
         
       } else if (petType === 'สุนัข') {
         const dogOptions = [
@@ -2083,16 +2208,17 @@
           'Salmon Formula | Med-Large Breed',
           'Chicken Formula | Small Breed',
           'Chicken Formula | Med-Large Breed'
-        ]
+        ];
         
         dogOptions.forEach(option => {
-          const optionElement = document.createElement('option')
-          optionElement.value = option
-          optionElement.text = option + ' (อาหารสุนัข)'
-          sampleSelect.appendChild(optionElement)
-        })
+          const optionElement = document.createElement('option');
+          optionElement.value = option;
+          optionElement.text = option + ' (อาหารสุนัข)';
+          sampleSelect.appendChild(optionElement);
+        });
         
       } else if (petType === 'สุนัขและแมว') {
+        // แสดงทั้งหมด
         const allOptions = [
           { value: 'Fish & Chicken Formula', text: 'Fish & Chicken Formula (อาหารแมว)' },
           { value: 'Salmon Formula', text: 'Salmon Formula (อาหารแมว)' },
@@ -2101,307 +2227,465 @@
           { value: 'Salmon Formula | Med-Large Breed', text: 'Salmon Formula | Med-Large Breed (อาหารสุนัข)' },
           { value: 'Chicken Formula | Small Breed', text: 'Chicken Formula | Small Breed (อาหารสุนัข)' },
           { value: 'Chicken Formula | Med-Large Breed', text: 'Chicken Formula | Med-Large Breed (อาหารสุนัข)' }
-        ]
+        ];
         
         allOptions.forEach(option => {
-          const optionElement = document.createElement('option')
-          optionElement.value = option.value
-          optionElement.text = option.text
-          sampleSelect.appendChild(optionElement)
-        })
+          const optionElement = document.createElement('option');
+          optionElement.value = option.value;
+          optionElement.text = option.text;
+          sampleSelect.appendChild(optionElement);
+        });
       }
     }
-
-    // สลับการแสดง/ซ่อนช่องอัปโหลดใบเสร็จตามช่องทางการตลาดที่เลือก
-    function toggleReceiptUpload() {
-      const checkedChannels = document.querySelectorAll('input[name="marketingChannelMultiple"]:checked')
-      const receiptGroup = document.getElementById('receiptUploadGroup')
+    
+    // Handle postcode data received from server
+    function onPostCodeDataReceived(data) {
+      postCodeData = data;
       
-      let showReceipt = false
+      // Populate province dropdown (unique values)
+      const provinces = [...new Set(data.map(item => item[3]))].sort();
+      const provinceSelect = document.getElementById('province');
+      
+      provinces.forEach(province => {
+        const option = document.createElement('option');
+        option.value = province;
+        option.text = province;
+        provinceSelect.appendChild(option);
+      });
+    }
+    
+    // Load districts based on selected province
+    function loadDistricts() {
+      const provinceValue = document.getElementById('province').value;
+      const districtSelect = document.getElementById('district');
+      const subdistrictSelect = document.getElementById('subdistrict');
+      const postcodeSelect = document.getElementById('postcode');
+      
+      // Reset and disable dependent dropdowns
+      districtSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
+      subdistrictSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
+      postcodeSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
+      
+      subdistrictSelect.disabled = true;
+      postcodeSelect.disabled = true;
+      
+      if (!provinceValue) {
+        districtSelect.disabled = true;
+        return;
+      }
+      
+      // Filter districts by selected province
+      const districts = [...new Set(
+        postCodeData
+          .filter(item => item[3] === provinceValue)
+          .map(item => item[2])
+      )].sort();
+      
+      // Populate district dropdown
+      districts.forEach(district => {
+        const option = document.createElement('option');
+        option.value = district;
+        option.text = district;
+        districtSelect.appendChild(option);
+      });
+      
+      districtSelect.disabled = false;
+    }
+    
+    // Load subdistricts based on selected district
+    function loadSubdistricts() {
+      const provinceValue = document.getElementById('province').value;
+      const districtValue = document.getElementById('district').value;
+      const subdistrictSelect = document.getElementById('subdistrict');
+      const postcodeSelect = document.getElementById('postcode');
+      
+      // Reset and disable dependent dropdowns
+      subdistrictSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
+      postcodeSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
+      
+      postcodeSelect.disabled = true;
+      
+      if (!districtValue) {
+        subdistrictSelect.disabled = true;
+        return;
+      }
+      
+      // Filter subdistricts by selected province and district
+      const subdistricts = [...new Set(
+        postCodeData
+          .filter(item => item[3] === provinceValue && item[2] === districtValue)
+          .map(item => item[1])
+      )].sort();
+      
+      // Populate subdistrict dropdown
+      subdistricts.forEach(subdistrict => {
+        const option = document.createElement('option');
+        option.value = subdistrict;
+        option.text = subdistrict;
+        subdistrictSelect.appendChild(option);
+      });
+      
+      subdistrictSelect.disabled = false;
+    }
+    
+    // Load postcode based on selected subdistrict
+    function loadPostcode() {
+      const provinceValue = document.getElementById('province').value;
+      const districtValue = document.getElementById('district').value;
+      const subdistrictValue = document.getElementById('subdistrict').value;
+      const postcodeSelect = document.getElementById('postcode');
+      
+      // Reset postcode dropdown
+      postcodeSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
+      
+      if (!subdistrictValue) {
+        postcodeSelect.disabled = true;
+        return;
+      }
+      
+      // Filter postcodes by selected province, district, and subdistrict
+      const postcodes = [...new Set(
+        postCodeData
+          .filter(item => 
+            item[3] === provinceValue && 
+            item[2] === districtValue && 
+            item[1] === subdistrictValue
+          )
+          .map(item => item[0])
+      )].sort();
+      
+      // Populate postcode dropdown
+      postcodes.forEach(postcode => {
+        const option = document.createElement('option');
+        option.value = postcode;
+        option.text = postcode;
+        postcodeSelect.appendChild(option);
+      });
+      
+      postcodeSelect.disabled = false;
+    }
+    
+    // Toggle receipt upload field visibility based on marketing channel selection
+    function toggleReceiptUpload() {
+      const checkedChannels = document.querySelectorAll('input[name="marketingChannelMultiple"]:checked');
+      const receiptGroup = document.getElementById('receiptUploadGroup');
+      
+      // ตรวจสอบว่ามีการเลือก "เห็นสินค้า/ป้ายโฆษณา ในร้านอาหารสัตว์เลี้ยง" หรือไม่
+      let showReceipt = false;
       checkedChannels.forEach(checkbox => {
         if (checkbox.value === 'เห็นสินค้า/ป้ายโฆษณา ในร้านอาหารสัตว์เลี้ยง') {
-          showReceipt = true
+          showReceipt = true;
         }
-      })
+      });
       
       if (showReceipt) {
-        receiptGroup.style.display = 'block'
+        receiptGroup.style.display = 'block';
       } else {
-        receiptGroup.style.display = 'none'
-        document.getElementById('receipt').value = ''
-        document.getElementById('imagePreview').style.display = 'none'
+        receiptGroup.style.display = 'none';
+        document.getElementById('receipt').value = '';
+        document.getElementById('imagePreview').style.display = 'none';
       }
     }
-
-    // แสดงตัวอย่างรูปภาพที่อัปโหลด
+    
+    // Preview uploaded image
     function previewImage(input) {
-      const preview = document.getElementById('imagePreview')
+      const preview = document.getElementById('imagePreview');
       
       if (input.files && input.files[0]) {
-        const reader = new FileReader()
+        const reader = new FileReader();
         
         reader.onload = function(e) {
-          preview.src = e.target.result
-          preview.style.display = 'block'
-        }
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+        };
         
-        reader.readAsDataURL(input.files[0])
+        reader.readAsDataURL(input.files[0]);
       } else {
-        preview.style.display = 'none'
+        preview.style.display = 'none';
       }
     }
 
-    // แสดงตัวอย่างรูปภาพหลายรูปที่อัปโหลด
+    // Preview uploaded images for pet photos (multiple files)
     function previewUploadedImages(input) {
-      const previewContainer = document.getElementById('uploadedImagesPreview')
-      const gridContainer = previewContainer.querySelector('div')
-      const fileCountDiv = document.getElementById('fileCount')
+      const previewContainer = document.getElementById('uploadedImagesPreview');
+      const gridContainer = previewContainer.querySelector('div');
+      const fileCountDiv = document.getElementById('fileCount');
       
-      gridContainer.innerHTML = ''
+      // ล้างรูปภาพเดิม
+      gridContainer.innerHTML = '';
       
       if (input.files && input.files.length > 0) {
+        // ตรวจสอบจำนวนไฟล์ไม่เกิน 5
         if (input.files.length > 5) {
-          alert('สามารถเลือกได้สูงสุด 5 รูปเท่านั้น กรุณาเลือกใหม่')
-          input.value = ''
-          previewContainer.style.display = 'none'
-          fileCountDiv.style.display = 'none'
-          return
+          alert('สามารถเลือกได้สูงสุด 5 รูปเท่านั้น กรุณาเลือกใหม่');
+          input.value = ''; // ล้างการเลือกไฟล์
+          previewContainer.style.display = 'none';
+          fileCountDiv.style.display = 'none';
+          return;
         }
         
-        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp']
+        // ตรวจสอบประเภทไฟล์
+        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp'];
         
         for (let i = 0; i < input.files.length; i++) {
-          const file = input.files[i]
+          const file = input.files[i];
           
+          // ตรวจสอบประเภทไฟล์
           if (!allowedTypes.includes(file.type)) {
-            alert(`ไฟล์ "${file.name}" ไม่ใช่ไฟล์รูปภาพที่รองรับ\nรองรับเฉพาะ: JPG, JPEG, PNG, GIF, WebP`)
-            input.value = ''
-            previewContainer.style.display = 'none'
-            fileCountDiv.style.display = 'none'
-            return
+            alert(`ไฟล์ "${file.name}" ไม่ใช่ไฟล์รูปภาพที่รองรับ\nรองรับเฉพาะ: JPG, JPEG, PNG, GIF, WebP`);
+            input.value = '';
+            previewContainer.style.display = 'none';
+            fileCountDiv.style.display = 'none';
+            return;
           }
         }
         
-        fileCountDiv.textContent = `เลือกแล้ว ${input.files.length} รูป`
-        fileCountDiv.style.display = 'block'
+        // แสดงจำนวนไฟล์ที่เลือก
+        fileCountDiv.textContent = `เลือกแล้ว ${input.files.length} รูป`;
+        fileCountDiv.style.display = 'block';
         
+        // สร้าง preview สำหรับแต่ละไฟล์
         Array.from(input.files).forEach((file, index) => {
-          const reader = new FileReader()
+          const reader = new FileReader();
           
           reader.onload = function(e) {
-            const imageContainer = document.createElement('div')
-            imageContainer.className = 'image-preview-item'
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'image-preview-item';
             
-            const img = document.createElement('img')
-            img.src = e.target.result
-            img.alt = `รูปภาพที่ ${index + 1}`
+            const img = document.createElement('img');
+            img.src = e.target.result;
+            img.alt = `รูปภาพที่ ${index + 1}`;
             
-            const numberLabel = document.createElement('div')
-            numberLabel.className = 'image-number'
-            numberLabel.textContent = index + 1
+            // เพิ่มหมายเลขรูปภาพ
+            const numberLabel = document.createElement('div');
+            numberLabel.className = 'image-number';
+            numberLabel.textContent = index + 1;
             
-            imageContainer.appendChild(img)
-            imageContainer.appendChild(numberLabel)
-            gridContainer.appendChild(imageContainer)
-          }
+            imageContainer.appendChild(img);
+            imageContainer.appendChild(numberLabel);
+            gridContainer.appendChild(imageContainer);
+          };
           
           reader.onerror = function() {
-            alert(`เกิดข้อผิดพลาดในการโหลดไฟล์: ${file.name}`)
-          }
+            alert(`เกิดข้อผิดพลาดในการโหลดไฟล์: ${file.name}`);
+          };
           
-          reader.readAsDataURL(file)
-        })
+          reader.readAsDataURL(file);
+        });
         
-        previewContainer.style.display = 'block'
+        previewContainer.style.display = 'block';
       } else {
-        previewContainer.style.display = 'none'
-        fileCountDiv.style.display = 'none'
+        previewContainer.style.display = 'none';
+        fileCountDiv.style.display = 'none';
       }
     }
-
-    // ตรวจสอบความถูกต้องของเบอร์โทรศัพท์
+    
+    // Validate phone number format
     function validatePhone() {
-      const phoneInput = document.getElementById('phone')
-      const phoneError = document.getElementById('phoneError')
-      const phonePattern = /^[0-9]{9,10}$/
+      const phoneInput = document.getElementById('phone');
+      const phoneError = document.getElementById('phoneError');
+      const phonePattern = /^[0-9]{9,10}$/;
       
       if (phoneInput.value && !phonePattern.test(phoneInput.value)) {
-        phoneError.style.display = 'block'
-        phoneInput.setCustomValidity('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง')
+        phoneError.style.display = 'block';
+        phoneInput.setCustomValidity('กรุณากรอกเบอร์โทรศัพท์ให้ถูกต้อง');
       } else {
-        phoneError.style.display = 'none'
-        phoneInput.setCustomValidity('')
+        phoneError.style.display = 'none';
+        phoneInput.setCustomValidity('');
       }
     }
-
-    // ตรวจสอบความถูกต้องของอีเมล
+    
+    // Validate email format
     function validateEmail() {
-      const emailInput = document.getElementById('email')
-      const emailError = document.getElementById('emailError')
-      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+      const emailInput = document.getElementById('email');
+      const emailError = document.getElementById('emailError');
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       
       if (emailInput.value && !emailPattern.test(emailInput.value)) {
-        emailError.style.display = 'block'
-        emailInput.setCustomValidity('กรุณากรอกอีเมลให้ถูกต้อง')
+        emailError.style.display = 'block';
+        emailInput.setCustomValidity('กรุณากรอกอีเมลให้ถูกต้อง');
       } else {
-        emailError.style.display = 'none'
-        emailInput.setCustomValidity('')
+        emailError.style.display = 'none';
+        emailInput.setCustomValidity('');
       }
     }
 
     // รวบรวมค่าจาก checkbox groups
     function getCheckboxValues(name) {
-      const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`)
-      return Array.from(checkboxes).map(cb => cb.value)
+      const checkboxes = document.querySelectorAll(`input[name="${name}"]:checked`);
+      return Array.from(checkboxes).map(cb => cb.value);
     }
 
-    // จัดการ collapsible sections
+    // ฟังก์ชันจัดการ collapsible sections
     function toggleCollapsible(targetId) {
-      const content = document.getElementById(targetId)
-      const header = content.previousElementSibling
+      const content = document.getElementById(targetId);
+      const header = content.previousElementSibling;
       
-      header.classList.toggle('active')
-      content.classList.toggle('active')
+      // Toggle active class
+      header.classList.toggle('active');
+      content.classList.toggle('active');
     }
 
-    // อัปเดตจำนวนที่เลือกในแต่ละ section
+    // ฟังก์ชันอัปเดตจำนวนที่เลือกในแต่ละ section
     function updateSelectedCount(checkboxName, countElementId) {
-      const selectedCount = getCheckboxValues(checkboxName).length
-      document.getElementById(countElementId).textContent = selectedCount
+      const selectedCount = getCheckboxValues(checkboxName).length;
+      document.getElementById(countElementId).textContent = selectedCount;
       
+      // อัปเดต preview สำหรับแบรนด์
       if (checkboxName === 'currentBrandMultiple') {
-        updateBrandPreview()
+        updateBrandPreview();
       }
     }
 
-    // อัปเดตการแสดงรายการแบรนด์ที่เลือก
+    // ฟังก์ชันอัปเดตการแสดงรายการแบรนด์ที่เลือก
     function updateBrandPreview() {
-      const selectedBrands = getCheckboxValues('currentBrandMultiple')
-      const brandOtherText = document.getElementById('currentBrandOther').value.trim()
-      const previewElement = document.getElementById('brandSelectedPreview')
+      const selectedBrands = getCheckboxValues('currentBrandMultiple');
+      const brandOtherText = document.getElementById('currentBrandOther').value.trim();
+      const previewElement = document.getElementById('brandSelectedPreview');
       
       if (selectedBrands.length === 0) {
-        previewElement.innerHTML = ''
-        return
+        previewElement.innerHTML = '';
+        return;
       }
       
-      let displayItems = [...selectedBrands]
+      let displayItems = [...selectedBrands];
       
+      // ถ้าเลือก "อื่นๆ" และมีการกรอกข้อมูล
       if (selectedBrands.includes('อื่นๆ') && brandOtherText) {
-        const otherIndex = displayItems.indexOf('อื่นๆ')
-        displayItems[otherIndex] = `อื่นๆ (${brandOtherText})`
+        // แทนที่ "อื่นๆ" ด้วยข้อมูลที่กรอก
+        const otherIndex = displayItems.indexOf('อื่นๆ');
+        displayItems[otherIndex] = `อื่นๆ (${brandOtherText})`;
       }
       
       previewElement.innerHTML = `
         <div class="preview-label">แบรนด์ที่เลือก:</div>
         <div class="preview-items">${displayItems.join(', ')}</div>
-      `
+      `;
     }
 
-    // ตั้งค่า event listener สำหรับช่องกรอก "อื่นๆ" ของแบรนด์
+    // เพิ่ม event listener สำหรับช่องกรอก "อื่นๆ" ของแบรนด์
     function setupBrandOtherListener() {
-      const brandOtherInput = document.getElementById('currentBrandOther')
+      const brandOtherInput = document.getElementById('currentBrandOther');
       if (brandOtherInput) {
-        brandOtherInput.addEventListener('input', updateBrandPreview)
+        brandOtherInput.addEventListener('input', updateBrandPreview);
       }
     }
-
-    // ตรวจสอบความถูกต้องของฟอร์มก่อนส่ง
+    
+    // Validate form before submission
     function validateForm() {
-      const firstName = document.getElementById('firstName').value.trim()
-      const lastName = document.getElementById('lastName').value.trim()
-      const email = document.getElementById('email').value.trim()
-      const phone = document.getElementById('phone').value.trim()
-      const houseNumber = document.getElementById('houseNumber').value.trim()
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const houseNumber = document.getElementById('houseNumber').value.trim();
       
-      const birthDay = document.getElementById('birthDay').value
-      const birthMonth = document.getElementById('birthMonth').value
-      const birthYear = document.getElementById('birthYear').value
+      // เพิ่มการตรวจสอบวันเดือนปีเกิด
+      const birthDay = document.getElementById('birthDay').value;
+      const birthMonth = document.getElementById('birthMonth').value;
+      const birthYear = document.getElementById('birthYear').value;
 
-      const occupation = document.getElementById('occupation').value
-      const occupationOther = document.getElementById('occupationOther').value.trim()
+      // ตรวจสอบอาชีพ
+      const occupation = document.getElementById('occupation').value;
+      const occupationOther = document.getElementById('occupationOther').value.trim();
 
-      const currentBrands = getCheckboxValues('currentBrandMultiple')
-      const brandOther = document.getElementById('currentBrandOther').value.trim()
+      // ตรวจสอบแบรนด์
+      const currentBrands = getCheckboxValues('currentBrandMultiple');
+      const brandOther = document.getElementById('currentBrandOther').value.trim();
 
-      const factor1 = document.getElementById('factor1').value
-      const factor2 = document.getElementById('factor2').value
-      const factor3 = document.getElementById('factor3').value
+      // ตรวจสอบปัจจัยสำคัญ
+      const factor1 = document.getElementById('factor1').value;
+      const factor2 = document.getElementById('factor2').value;
+      const factor3 = document.getElementById('factor3').value;
 
-      const marketingChannels = getCheckboxValues('marketingChannelMultiple')
+      // ตรวจสอบช่องทางการรับข่าวสาร (ต้องเลือกอย่างน้อย 1 ข้อ)
+      const marketingChannels = getCheckboxValues('marketingChannelMultiple');
 
-      let errorMessage = ""
+      let errorMessage = "";
       
+      // ตรวจสอบวันเดือนปีเกิด
       if (!birthDay || !birthMonth || !birthYear) {
-        errorMessage = "กรุณาเลือกวันเดือนปีเกิดให้ครบถ้วน"
+        errorMessage = "กรุณาเลือกวันเดือนปีเกิดให้ครบถ้วน";
       }
 
+      // ตรวจสอบอาชีพ
       if (!occupation) {
-        errorMessage = "กรุณาเลือกอาชีพ"
+        errorMessage = "กรุณาเลือกอาชีพ";
       } else if (occupation === "อื่น ๆ" && !occupationOther) {
-        errorMessage = "กรุณาระบุรายละเอียดอาชีพ"
+        errorMessage = "กรุณาระบุรายละเอียดอาชีพ";
       }
 
+      // ตรวจสอบแบรนด์
       if (currentBrands.length === 0) {
-        errorMessage = "กรุณาเลือกแบรนด์อาหารเม็ดอย่างน้อย 1 ข้อ"
+        errorMessage = "กรุณาเลือกแบรนด์อาหารเม็ดอย่างน้อย 1 ข้อ";
       }
       
+      // ตรวจสอบเบอร์โทรศัพท์ต้องไม่มีอักขระพิเศษ
       if (phone && !/^[0-9]+$/.test(phone)) {
-        errorMessage = "กรุณากรอกเบอร์โทรศัพท์เป็นตัวเลขเท่านั้น"
+        errorMessage = "กรุณากรอกเบอร์โทรศัพท์เป็นตัวเลขเท่านั้น";
       }
       
+      // ตรวจสอบอีเมลต้องถูกต้องตามรูปแบบ
       if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-        errorMessage = "กรุณากรอกอีเมลให้ถูกต้องตามรูปแบบ"
+        errorMessage = "กรุณากรอกอีเมลให้ถูกต้องตามรูปแบบ";
       }
       
+      // ตรวจสอบว่าบ้านเลขที่ต้องไม่เป็นค่าว่าง
       if (!houseNumber) {
-        errorMessage = "กรุณากรอกบ้านเลขที่"
+        errorMessage = "กรุณากรอกบ้านเลขที่";
       }
 
+      // ตรวจสอบปัจจัยสำคัญ 3 ข้อ
       if (!factor1 || !factor2 || !factor3) {
-        errorMessage = "กรุณาเลือกปัจจัยสำคัญครบทั้ง 3 ข้อ"
+        errorMessage = "กรุณาเลือกปัจจัยสำคัญครบทั้ง 3 ข้อ";
       }
       
+      // ตรวจสอบว่าถ้าเลือก "อื่นๆ" แล้วต้องกรอกข้อความด้วย
       if (factor1 === 'อื่นๆ' && !document.getElementById('factor1Other').value.trim()) {
-        errorMessage = "กรุณาระบุปัจจัยอื่นๆ สำหรับลำดับที่ 1"
+        errorMessage = "กรุณาระบุปัจจัยอื่นๆ สำหรับลำดับที่ 1";
       }
       if (factor2 === 'อื่นๆ' && !document.getElementById('factor2Other').value.trim()) {
-        errorMessage = "กรุณาระบุปัจจัยอื่นๆ สำหรับลำดับที่ 2"
+        errorMessage = "กรุณาระบุปัจจัยอื่นๆ สำหรับลำดับที่ 2";
       }
       if (factor3 === 'อื่นๆ' && !document.getElementById('factor3Other').value.trim()) {
-        errorMessage = "กรุณาระบุปัจจัยอื่นๆ สำหรับลำดับที่ 3"
+        errorMessage = "กรุณาระบุปัจจัยอื่นๆ สำหรับลำดับที่ 3";
       }
 
+      // ตรวจสอบช่องทางการรับข่าวสาร
       if (marketingChannels.length === 0) {
-        errorMessage = "กรุณาเลือกช่องทางการรับข่าวสารอย่างน้อย 1 ข้อ"
+        errorMessage = "กรุณาเลือกช่องทางการรับข่าวสารอย่างน้อย 1 ข้อ";
       }
       
+      // ถ้ามีข้อผิดพลาด แสดงข้อความและไม่ส่งฟอร์ม
       if (errorMessage) {
-        showErrorMessage(errorMessage)
-        return false
+        showError(errorMessage);
+        return false;
       }
       
-      return true
+      return true;
     }
 
-    // ส่งฟอร์ม
-    async function submitForm() {
-      console.log("submitForm() called")
+    // Fixed form submission function
+    function submitForm() {
+      console.log("submitForm() called");
       
+      // Validate form before submission
       if (!validateForm()) {
-        return
+        return;
       }
       
-      document.getElementById('loading').style.display = 'block'
-      document.getElementById('errorMessages').innerHTML = ''
-      document.getElementById('errorMessages').style.display = 'none'
+      // Show loading spinner
+      document.getElementById('loading').style.display = 'block';
+      document.getElementById('errorMessages').innerHTML = '';
+      document.getElementById('errorMessages').style.display = 'none';
       
       try {
-        const reasonNotBuyBuzz = getCheckboxValues('reasonNotBuyBuzz')
-        const marketingChannelMultiple = getCheckboxValues('marketingChannelMultiple')
-        const improvementSuggestions = getCheckboxValues('improvementSuggestions')
-        const currentBrandMultiple = getCheckboxValues('currentBrandMultiple')
+        // รวบรวมค่าจาก checkbox groups
+        const reasonNotBuyBuzz = getCheckboxValues('reasonNotBuyBuzz');
+        const marketingChannelMultiple = getCheckboxValues('marketingChannelMultiple');
+        const improvementSuggestions = getCheckboxValues('improvementSuggestions');
+        const currentBrandMultiple = getCheckboxValues('currentBrandMultiple');
 
+        // Collect form data
         const formData = {
           firstName: document.getElementById('firstName').value.trim(),
           lastName: document.getElementById('lastName').value.trim(),
@@ -2442,12 +2726,13 @@
             document.getElementById('factor2').value,
             document.getElementById('factor3').value
           ].filter(val => val !== '').map((val, index) => {
+            // ถ้าเลือก "อื่นๆ" ให้นำข้อความที่กรอกมาแทน
             if (val === 'อื่นๆ') {
-              const factorNum = index + 1
-              const otherValue = document.getElementById(`factor${factorNum}Other`).value.trim()
-              return otherValue || 'อื่นๆ'
+              const factorNum = index + 1;
+              const otherValue = document.getElementById(`factor${factorNum}Other`).value.trim();
+              return otherValue || 'อื่นๆ';
             }
-            return val
+            return val;
           }).join(', '),
           improvementSuggestions: improvementSuggestions.join(', ') + 
             (document.getElementById('improveOther').value.trim() ? 
@@ -2456,247 +2741,192 @@
           terms1: document.getElementById('terms1').checked,
           terms2: document.getElementById('terms2').checked,
           terms3: document.getElementById('terms3').checked
-        }
+        };
         
-        console.log("Form data to be submitted:", formData)
+        console.log("Form data to be submitted:", formData);
         
-        // ตรวจสอบข้อมูลที่จำเป็น
-        let missingFields = []
+        // Check for required fields
+        let missingFields = [];
         
-        if (!formData.firstName) missingFields.push("ชื่อ")
-        if (!formData.lastName) missingFields.push("นามสกุล")
-        if (!formData.gender) missingFields.push("เพศ")
-        if (!formData.birthDay) missingFields.push("วันเกิด")
-        if (!formData.birthMonth) missingFields.push("เดือนเกิด")
-        if (!formData.birthYear) missingFields.push("ปีเกิด")
-        if (!formData.occupation) missingFields.push("อาชีพ")
-        if (formData.occupation === "อื่น ๆ" && !formData.occupationOther.trim()) missingFields.push("รายละเอียดอาชีพ")
-        if (!formData.monthlyIncome) missingFields.push("รายได้ต่อเดือน")
-        if (!formData.houseNumber) missingFields.push("บ้านเลขที่")
-        if (!formData.province) missingFields.push("จังหวัด")
-        if (!formData.district) missingFields.push("อำเภอ")
-        if (!formData.subdistrict) missingFields.push("ตำบล")
-        if (!formData.postcode) missingFields.push("รหัสไปรษณีย์")
-        if (!formData.phone) missingFields.push("เบอร์โทรศัพท์")
-        if (!formData.email) missingFields.push("อีเมล")
-        if (!formData.petType) missingFields.push("ประเภทสัตว์เลี้ยง")
-        if (!formData.petCount) missingFields.push("จำนวนสัตว์เลี้ยง")
-        if (currentBrandMultiple.length === 0) missingFields.push("แบรนด์ที่ใช้ปัจจุบัน")
-        if (!formData.monthlyExpense) missingFields.push("ค่าใช้จ่ายต่อเดือน")
-        if (!formData.sampleProduct) missingFields.push("สินค้าตัวอย่างที่ต้องการ")
-        if (marketingChannelMultiple.length === 0) missingFields.push("ช่องทางการรับข่าวสาร")
+        if (!formData.firstName) missingFields.push("ชื่อ");
+        if (!formData.lastName) missingFields.push("นามสกุล");
+        if (!formData.gender) missingFields.push("เพศ");
+        if (!formData.birthDay) missingFields.push("วันเกิด");
+        if (!formData.birthMonth) missingFields.push("เดือนเกิด");
+        if (!formData.birthYear) missingFields.push("ปีเกิด");
+        if (!formData.occupation) missingFields.push("อาชีพ");
+        if (formData.occupation === "อื่น ๆ" && !formData.occupationOther.trim()) missingFields.push("รายละเอียดอาชีพ");
+        if (!formData.monthlyIncome) missingFields.push("รายได้ต่อเดือน");
+        if (!formData.houseNumber) missingFields.push("บ้านเลขที่");
+        if (!formData.province) missingFields.push("จังหวัด");
+        if (!formData.district) missingFields.push("อำเภอ");
+        if (!formData.subdistrict) missingFields.push("ตำบล");
+        if (!formData.postcode) missingFields.push("รหัสไปรษณีย์");
+        if (!formData.phone) missingFields.push("เบอร์โทรศัพท์");
+        if (!formData.email) missingFields.push("อีเมล");
+        if (!formData.petType) missingFields.push("ประเภทสัตว์เลี้ยง");
+        if (!formData.petCount) missingFields.push("จำนวนสัตว์เลี้ยง");
+        if (currentBrandMultiple.length === 0) missingFields.push("แบรนด์ที่ใช้ปัจจุบัน");
+        if (!formData.monthlyExpense) missingFields.push("ค่าใช้จ่ายต่อเดือน");
+        if (!formData.sampleProduct) missingFields.push("สินค้าตัวอย่างที่ต้องการ");
+        if (marketingChannelMultiple.length === 0) missingFields.push("ช่องทางการรับข่าวสาร");
         
-        if (!formData.terms1) missingFields.push("การยอมรับเงื่อนไขข้อที่ 1")
+        // Check for acceptance of terms
+        if (!formData.terms1) missingFields.push("การยอมรับเงื่อนไขข้อที่ 1");
         
+        // ตรวจสอบปัจจัยอื่นๆ ถ้าเลือก "อื่นๆ"
         if (document.getElementById('factor1').value === 'อื่นๆ' && !document.getElementById('factor1Other').value.trim()) {
-          missingFields.push("ปัจจัยอื่นๆ สำหรับลำดับที่ 1")
+          missingFields.push("ปัจจัยอื่นๆ สำหรับลำดับที่ 1");
         }
         if (document.getElementById('factor2').value === 'อื่นๆ' && !document.getElementById('factor2Other').value.trim()) {
-          missingFields.push("ปัจจัยอื่นๆ สำหรับลำดับที่ 2")
+          missingFields.push("ปัจจัยอื่นๆ สำหรับลำดับที่ 2");
         }
         if (document.getElementById('factor3').value === 'อื่นๆ' && !document.getElementById('factor3Other').value.trim()) {
-          missingFields.push("ปัจจัยอื่นๆ สำหรับลำดับที่ 3")
+          missingFields.push("ปัจจัยอื่นๆ สำหรับลำดับที่ 3");
         }
         
         if (missingFields.length > 0) {
-          console.log("Missing fields:", missingFields)
-          showErrorMessage(`กรุณากรอกข้อมูลให้ครบถ้วน: ${missingFields.join(', ')}`)
-          document.getElementById('loading').style.display = 'none'
-          return
+          console.log("Missing fields:", missingFields);
+          document.getElementById('loading').style.display = 'none';
+          showError(`กรุณากรอกข้อมูลให้ครบถ้วน: ${missingFields.join(', ')}`);
+          return;
         }
         
-        // จัดการไฟล์รูปภาพ
-        const receiptFileInput = document.getElementById('receipt')
-        const receiptFile = receiptFileInput && receiptFileInput.files.length > 0 ? receiptFileInput.files[0] : null
+        // Get file data if uploaded (multiple files support)
+        const receiptFileInput = document.getElementById('receipt');
+        const receiptFile = receiptFileInput && receiptFileInput.files.length > 0 ? receiptFileInput.files[0] : null;
         
-        const uploadedFileInput = document.getElementById('receiptUpload')
-        const uploadedFiles = uploadedFileInput && uploadedFileInput.files.length > 0 ? Array.from(uploadedFileInput.files) : []
+        const uploadedFileInput = document.getElementById('receiptUpload');
+        const uploadedFiles = uploadedFileInput && uploadedFileInput.files.length > 0 ? Array.from(uploadedFileInput.files) : [];
         
+        // Process multiple file uploads if present
         if (receiptFile) {
-          console.log("Receipt file found, processing...")
-          const reader = new FileReader()
+          console.log("Receipt file found, processing...");
+          const reader = new FileReader();
           reader.onload = function(e) {
-            console.log("File read complete")
-            const base64Data = e.target.result.split(',')[1]
+            console.log("File read complete");
+            const base64Data = e.target.result.split(',')[1]; // Remove data URL prefix
             formData.receiptFile = {
               name: receiptFile.name,
               type: receiptFile.type,
               data: base64Data
-            }
+            };
             
-            sendToServer(formData)
-          }
+            // Send form data with file
+            sendToServer(formData);
+          };
           reader.onerror = function(e) {
-            console.error("Error reading file:", e)
-            document.getElementById('loading').style.display = 'none'
-            showErrorMessage(`เกิดข้อผิดพลาดในการอ่านไฟล์: ${e.target.error}`)
-          }
-          reader.readAsDataURL(receiptFile)
+            console.error("Error reading file:", e);
+            document.getElementById('loading').style.display = 'none';
+            showError(`เกิดข้อผิดพลาดในการอ่านไฟล์: ${e.target.error}`);
+          };
+          reader.readAsDataURL(receiptFile);
         } else if (uploadedFiles.length > 0) {
-          console.log(`Found ${uploadedFiles.length} uploaded files, processing...`)
+          console.log(`Found ${uploadedFiles.length} uploaded files, processing...`);
           
-          let filesProcessed = 0
-          const filesData = []
+          let filesProcessed = 0;
+          const filesData = [];
           
           uploadedFiles.forEach((file, index) => {
-            const reader = new FileReader()
+            const reader = new FileReader();
             reader.onload = function(e) {
-              const base64Data = e.target.result.split(',')[1]
+              const base64Data = e.target.result.split(',')[1]; // Remove data URL prefix
               filesData[index] = {
                 name: file.name,
                 type: file.type,
                 data: base64Data
-              }
+              };
               
-              filesProcessed++
+              filesProcessed++;
               
+              // เมื่อประมวลผลไฟล์ครบทุกไฟล์แล้ว
               if (filesProcessed === uploadedFiles.length) {
-                console.log("All files processed successfully")
-                formData.receiptFile = filesData.length === 1 ? filesData[0] : filesData
-                sendToServer(formData)
+                console.log("All files processed successfully");
+                // ส่งไฟล์หลายรูปไปยังเซิร์ฟเวอร์
+                formData.receiptFile = filesData.length === 1 ? filesData[0] : filesData; // ถ้า 1 รูปส่งแบบ object, หลายรูปส่งแบบ array
+                sendToServer(formData);
               }
-            }
+            };
             
             reader.onerror = function(e) {
-              console.error("Error reading file:", e)
-              document.getElementById('loading').style.display = 'none'
-              showErrorMessage(`เกิดข้อผิดพลาดในการอ่านไฟล์: ${file.name}`)
-            }
+              console.error("Error reading file:", e);
+              document.getElementById('loading').style.display = 'none';
+              showError(`เกิดข้อผิดพลาดในการอ่านไฟล์: ${file.name}`);
+            };
             
-            reader.readAsDataURL(file)
-          })
+            reader.readAsDataURL(file);
+          });
         } else {
-          console.log("No files, submitting form data directly")
-          sendToServer(formData)
+          // Submit form without file data
+          console.log("No files, submitting form data directly");
+          sendToServer(formData);
         }
       } catch (error) {
-        console.error("Error in submitForm:", error)
-        document.getElementById('loading').style.display = 'none'
-        showErrorMessage(`เกิดข้อผิดพลาด: ${error.message || 'ไม่สามารถส่งข้อมูลได้'}`)
+        console.error("Error in submitForm:", error);
+        document.getElementById('loading').style.display = 'none';
+        showError(`เกิดข้อผิดพลาด: ${error.message || 'ไม่สามารถส่งข้อมูลได้'}`);
       }
     }
 
-    // ส่งข้อมูลไปยัง Supabase Edge Function
-    async function sendToServer(formData) {
-      try {
-        const response = await fetch(`${EDGE_FUNCTION_URL}?action=submitSurvey`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
-          },
-          body: JSON.stringify(formData)
-        })
-        
-        if (!response.ok) throw new Error('Failed to submit survey')
-        
-        const result = await response.json()
-        console.log("Server response:", result)
-        
-        document.getElementById('loading').style.display = 'none'
-        
-        if (result.success) {
-          // แสดงข้อความขอบคุณ
-          try {
-            const formContent = document.querySelector('.form-content')
-            if (formContent) {
-              formContent.innerHTML = ''
-              
-              const thankYouHTML = `
-                <div id="thankYouMessage" style="display:block; text-align:center; margin:40px auto; padding:40px; background-color:#07476c; border-radius:12px; border-left:4px solid #4caf50; color:#ffffff; max-width:600px;">
-                  <h2 style="color:#ffffff; margin-bottom:20px; font-size:28px; font-weight:600;">THANK YOU</h2>
-                  <p style="font-size:16px; line-height:1.7; margin-bottom:10px;">ขอบพระคุณที่ให้ความสนใจ แบรนด์อาหารสัตว์เลี้ยง BUZZ PETS FOOD</p>
-                  <p style="font-size:16px; line-height:1.7; margin-bottom:10px;">เราจะจัดส่งผลิตภัณฑ์ตัวอย่างให้ท่านภายใน 30 วัน หลังจากการลงทะเบียน</p>
-                  <img src="https://i.postimg.cc/0NP58LpV/COVER.jpg" alt="BUZZ PETS FOOD" style="max-width:200px; margin-top:20px;">
-                </div>
-              `
-              
-              formContent.innerHTML = thankYouHTML
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-              
-              console.log("Thank you message created and shown successfully")
-            } else {
-              console.error("Form content element not found")
-              alert("ขอบคุณสำหรับการลงทะเบียน! เราจะจัดส่งผลิตภัณฑ์ตัวอย่างให้ท่านภายใน 30 วัน")
+    function sendToServer(formData) {
+      callSupabaseAPI('submitSurvey', formData)
+        .then(response => {
+          console.log("Server response:", response);
+          
+          // ปิดตัวโหลดดิ้ง
+          document.getElementById('loading').style.display = 'none';
+          
+          // ตรวจสอบว่าการบันทึกสำเร็จหรือไม่
+          if (response.success) {
+            // กรณีบันทึกสำเร็จ - แสดงข้อความขอบคุณ
+            try {
+              // เคลียร์พื้นที่และจัดการโครงสร้างหน้าเว็บใหม่
+              const formContent = document.querySelector('.form-content');
+              if (formContent) {
+                // ล้างเนื้อหาทั้งหมดในพื้นที่ฟอร์ม
+                formContent.innerHTML = '';
+                
+                // สร้างข้อความขอบคุณ
+                const thankYouHTML = `
+                  <div id="thankYouMessage" style="display:block; text-align:center; margin:40px auto; padding:40px; background-color:#07476c; border-radius:12px; border-left:4px solid #4caf50; color:#ffffff; max-width:600px;">
+                    <h2 style="color:#ffffff; margin-bottom:20px; font-size:28px; font-weight:600;">THANK YOU</h2>
+                    <p style="font-size:16px; line-height:1.7; margin-bottom:10px;">ขอบพระคุณที่ให้ความสนใจ แบรนด์อาหารสัตว์เลี้ยง BUZZ PETS FOOD</p>
+                    <p style="font-size:16px; line-height:1.7; margin-bottom:10px;">เราจะจัดส่งผลิตภัณฑ์ตัวอย่างให้ท่านภายใน 30 วัน หลังจากการลงทะเบียน</p>
+                    <img src="https://i.postimg.cc/0NP58LpV/COVER.jpg" alt="BUZZ PETS FOOD" style="max-width:200px; margin-top:20px;">
+                  </div>
+                `;
+                
+                // แทรกข้อความขอบคุณลงในพื้นที่ฟอร์มโดยตรง
+                formContent.innerHTML = thankYouHTML;
+                
+                // เลื่อนไปที่ด้านบนของหน้า
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                console.log("Thank you message created and shown successfully");
+              } else {
+                // ถ้าไม่พบ form-content ให้ใช้วิธีสร้าง alert แทน
+                console.error("Form content element not found");
+                alert("ขอบคุณสำหรับการลงทะเบียน! เราจะจัดส่งผลิตภัณฑ์ตัวอย่างให้ท่านภายใน 30 วัน");
+              }
+            } catch (err) {
+              console.error("Error showing thank you message:", err);
+              alert("ขอบคุณสำหรับการลงทะเบียน! เราจะจัดส่งผลิตภัณฑ์ตัวอย่างให้ท่านภายใน 30 วัน");
             }
-          } catch (err) {
-            console.error("Error showing thank you message:", err)
-            alert("ขอบคุณสำหรับการลงทะเบียน! เราจะจัดส่งผลิตภัณฑ์ตัวอย่างให้ท่านภายใน 30 วัน")
+          } else {
+            // กรณีพบข้อมูลซ้ำหรือเกิดข้อผิดพลาด - แสดงข้อความแจ้งเตือน
+            console.warn("Registration failed:", response.message);
+            showError(response.message);
           }
-        } else {
-          console.warn("Registration failed:", result.message)
-          
-          const errorBoxHTML = `
-            <div style="color: #721c24; 
-                        background-color: #f8d7da; 
-                        border-color: #f5c6cb; 
-                        padding: 20px; 
-                        margin: 20px 0; 
-                        border: 2px solid;
-                        border-radius: 12px;
-                        border-left: 6px solid #ff5252;
-                        font-size: 1rem;
-                        font-weight: 500;
-                        text-align: center;
-                        position: relative;
-                        animation: fadeInDown 0.4s ease-in-out;">
-              <h3 style="margin-bottom: 10px; color: #dc3545; font-size: 1.2rem;">ไม่สามารถลงทะเบียนได้</h3>
-              <p style="margin-bottom: 8px;">📢 ${result.message}</p>
-              <p style="font-size: 0.9rem; margin-top: 12px; color: #666;">กรุณาตรวจสอบข้อมูลและลองใหม่อีกครั้ง หรือติดต่อเจ้าหน้าที่</p>
-            </div>`
-          
-          document.getElementById('errorMessages').innerHTML = errorBoxHTML
-          document.getElementById('errorMessages').style.display = 'block'
-          
-          const styleSheet = document.createElement("style")
-          styleSheet.textContent = `
-            @keyframes fadeInDown {
-              from { opacity: 0; transform: translateY(-20px); }
-              to { opacity: 1; transform: translateY(0); }
-            }
-          `
-          document.head.appendChild(styleSheet)
-          
-          document.getElementById('errorMessages').scrollIntoView({ 
-            behavior: 'smooth', 
-            block: 'center' 
-          })
-          
-          setTimeout(() => {
-            document.getElementById('errorMessages').style.backgroundColor = '#ffecee'
-          }, 100)
-          setTimeout(() => {
-            document.getElementById('errorMessages').style.backgroundColor = ''
-          }, 700)
-        }
-      } catch (error) {
-        document.getElementById('loading').style.display = 'none'
-        
-        console.error("Server error:", error)
-        
-        const errorHTML = `
-          <div style="color: #721c24; 
-                      background-color: #f8d7da; 
-                      border-color: #f5c6cb; 
-                      padding: 20px; 
-                      margin: 20px 0; 
-                      border: 2px solid;
-                      border-radius: 12px;
-                      border-left: 6px solid #ff5252;
-                      font-size: 1rem;
-                      font-weight: 500;
-                      text-align: center;">
-            <h3 style="margin-bottom: 10px; color: #dc3545;">เกิดข้อผิดพลาดในการลงทะเบียน</h3>
-            <p>${error.message}</p>
-          </div>`
-        
-        document.getElementById('errorMessages').innerHTML = errorHTML
-        document.getElementById('errorMessages').style.display = 'block'
-        document.getElementById('errorMessages').scrollIntoView({ 
-          behavior: 'smooth', 
-          block: 'center' 
         })
-      }
+        .catch(error => {
+          // ซ่อนตัวโหลดดิ้ง
+          document.getElementById('loading').style.display = 'none';
+          
+          console.error("Server error:", error);
+          
+          // แสดงข้อความข้อผิดพลาดทั่วไป
+          showError('เกิดข้อผิดพลาดในการลงทะเบียน กรุณาลองใหม่อีกครั้ง');
+        });
     }
   </script>
 </body>
