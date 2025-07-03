@@ -1,616 +1,265 @@
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
+// === survey-api.ts ===
+import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+
+// CORS Headers
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+  "Access-Control-Allow-Methods": "GET, POST, OPTIONS"
 };
 
+// ดึงค่าจาก Environment Variable อย่างถูกต้อง
+const SUPABASE_URL = Deno.env.get('SUPABASE_URL') || '';
+const SUPABASE_SERVICE_ROLE_KEY = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY') || '';
 
-// แก้ไข environment variables ให้ถูกต้อง
-const supabaseUrl = Deno.env.get('https://mcsixclxwxvfyyddrzmh.supabase.co') || 'https://mcsixclxwxvfyyddrzmh.supabase.co'
-const supabaseServiceKey = Deno.env.get('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTQ2MDUzOCwiZXhwIjoyMDY3MDM2NTM4fQ.rbE3mx3jTiXStLadxjNO3yKZoinlCzxvN-wf_R3nkg0') || Deno.env.get('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0NjA1MzgsImV4cCI6MjA2NzAzNjUzOH0.beq2VeTmn31QRPr5SmJZ1A5vc8PxWXugT89AVukwqm4') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTQ2MDUzOCwiZXhwIjoyMDY3MDM2NTM4fQ.rbE3mx3jTiXStLadxjNO3yKZoinlCzxvN-wf_R3nkg0'
-
-console.log('Supabase URL:', supabaseUrl)
-console.log('Service Key exists:', !!supabaseServiceKey)
-
-interface SurveyData {
-  firstName: string
-  lastName: string
-  gender: string
-  birthDay: string
-  birthMonth: string
-  birthYear: string
-  occupation: string
-  occupationOther?: string
-  monthlyIncome: string
-  villageOrBuilding?: string
-  houseNumber: string
-  moo?: string
-  soi?: string
-  road?: string
-  province: string
-  district: string
-  subdistrict: string
-  postcode: string
-  phone: string
-  email: string
-  petType: string
-  petCount: string
-  currentBrand: string
-  currentBrandOther?: string
-  receiptUpload?: string
-  reasonNotBuyBuzz?: string
-  monthlyExpense: string
-  marketingChannel: string
-  marketingChannelOther?: string
-  importantFactors?: string
-  improvementSuggestions?: string
-  sampleProduct: string
-  terms1: boolean
-  terms2: boolean
-  terms3: boolean
-  receiptFile?: any
-}
+// สร้าง client supabase โดยใส่ key ตัวนี้เท่านั้นพอ (service role key)
+const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
 Deno.serve(async (req) => {
+  // Handle CORS preflight
   if (req.method === 'OPTIONS') {
-    return new Response('ok', { headers: corsHeaders })
+    return new Response('ok', { headers: corsHeaders });
   }
 
+  // ตรวจสอบ environment variable
+  if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+    console.error('❌ Missing environment variables:');
+    console.error('SUPABASE_URL:', SUPABASE_URL ? 'Present' : 'Missing');
+    console.error('SUPABASE_SERVICE_ROLE_KEY:', SUPABASE_SERVICE_ROLE_KEY ? 'Present' : 'Missing');
+    return jsonResponse({
+      error: 'Missing SUPABASE_URL or SUPABASE_SERVICE_ROLE_KEY',
+      envStatus: {
+        SUPABASE_URL: !!SUPABASE_URL,
+        SUPABASE_SERVICE_ROLE_KEY: !!SUPABASE_SERVICE_ROLE_KEY
+      }
+    }, 500);
+  }
+
+  const url = new URL(req.url);
+  const action = url.searchParams.get('action');
+  console.log('📡 Received request:', req.method, action);
+
   try {
-    const supabase = createClient(supabaseUrl, supabaseServiceKey)
-    const url = new URL(req.url)
-    const action = url.searchParams.get('action')
-
-    console.log('Received request:', { method: req.method, action, url: req.url })
-
-    switch (action) {
-      case 'getPostCodeData':
-        return await getPostCodeData(supabase)
-      
-      case 'checkDuplicate':
-        const checkData = await req.json()
-        return await checkDuplicateRegistration(supabase, checkData)
-      
-      case 'submitSurvey':
-        const surveyData = await req.json()
-        return await submitSurveyData(supabase, surveyData)
-      
+    switch(action) {
+      case 'getPostCodeData': {
+        console.log('🏢 Getting postcode data...');
+        const data = await getPostCodeData();
+        console.log('📊 Postcode data count:', data.length);
+        return jsonResponse(data);
+      }
+      case 'checkDuplicate': {
+        console.log('🔍 Checking for duplicates...');
+        const checkData = await req.json();
+        const data = await checkDuplicateRegistration(checkData);
+        console.log('📋 Duplicate check result:', data);
+        return jsonResponse(data);
+      }
+      case 'submitSurvey': {
+        console.log('💾 Submitting survey...');
+        const surveyData = await req.json();
+        const result = await submitSurveyData(surveyData);
+        console.log('📝 Survey submission result:', result);
+        return jsonResponse(result);
+      }
       default:
-        return new Response(
-          JSON.stringify({ error: 'Invalid action' }),
-          { 
-            status: 400, 
-            headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-          }
-        )
+        console.error('❌ Invalid action:', action);
+        return jsonResponse({ error: "Invalid action" }, 400);
     }
   } catch (error) {
-    console.error('Error:', error)
-    return new Response(
-      JSON.stringify({ error: error.message, stack: error.stack }),
-      { 
-        status: 500, 
-        headers: { ...corsHeaders, 'Content-Type': 'application/json' } 
-      }
-    )
+    console.error('💥 Error in main handler:', error);
+    return jsonResponse({
+      error: 'Internal Server Error',
+      message: error.message,
+      stack: error.stack
+    }, 500);
   }
-})
+});
 
-async function getPostCodeData(supabase: any) {
-  try {
-    console.log('Getting postcode data...')
-    
-    // ลองใช้ข้อมูลจาก Supabase ก่อน
+function jsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: {
+      ...corsHeaders,
+      "Content-Type": "application/json"
+    }
+  });
+}
+
+// ===== ฟังก์ชันช่วยเหลือ =====
+
+// ดึงข้อมูลรหัสไปรษณีย์
+async function getPostCodeData() {
+  const result = [];
+  let from = 0;
+  const batchSize = 1000;
+
+  while(true) {
     const { data, error } = await supabase
       .from('postcodes')
       .select('postcode, subdistrict, district, province')
-      .order('province', { ascending: true })
-      .limit(10) // จำกัดจำนวนเพื่อทดสอบก่อน
+      .range(from, from + batchSize - 1);
 
     if (error) {
-      console.error('Database error:', error)
-      
-      // ถ้าไม่มีตาราง postcodes ให้ใช้ข้อมูลจำลอง
-      console.log('Using fallback data...')
-      const fallbackData = await getFallbackPostcodeData()
-      return new Response(
-        JSON.stringify(fallbackData),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
+      console.error('Error loading postcodes:', error);
+      break;
     }
 
-    console.log('Found records:', data?.length || 0)
+    if (!data || data.length === 0) break;
 
-    if (!data || data.length === 0) {
-      console.log('No data in postcodes table, using fallback...')
-      const fallbackData = await getFallbackPostcodeData()
-      return new Response(
-        JSON.stringify(fallbackData),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
+    result.push(...data);
 
-    // Convert to array format like original Google Sheets
-    const formattedData = data.map((row: any) => [
-      row.postcode,
-      row.subdistrict,
-      row.district,
-      row.province
-    ])
-
-    console.log('Returning formatted data:', formattedData.length, 'records')
-
-    return new Response(
-      JSON.stringify(formattedData),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
-  } catch (error) {
-    console.error('Error in getPostCodeData:', error)
-    
-    // ใช้ข้อมูลจำลองเป็น fallback
-    const fallbackData = await getFallbackPostcodeData()
-    return new Response(
-      JSON.stringify(fallbackData),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+    if (data.length < batchSize) break;
+    from += batchSize;
   }
-}
 
-async function getFallbackPostcodeData() {
-  // ข้อมูลจำลองสำหรับทดสอบ (ข้อมูลจริงของไทย)
-  return [
-    ["10100", "พระบรมมหาราชวัง", "พระนคร", "กรุงเทพมหานคร"],
-    ["10110", "วัดราชบพิธ", "พระนคร", "กรุงเทพมหานคร"],
-    ["10200", "ดุสิต", "ดุสิต", "กรุงเทพมหานคร"],
-    ["10210", "วชิรพยาบาล", "ดุสิต", "กรุงเทพมหานคร"],
-    ["10220", "สวนจิตรลดา", "ดุสิต", "กรุงเทพมหานคร"],
-    ["10230", "สี่แยกมหานาค", "ดุสิต", "กรุงเทพมหานคร"],
-    ["10300", "บางซื่อ", "บางซื่อ", "กรุงเทพมหานคร"],
-    ["10310", "รถไฟ", "บางซื่อ", "กรุงเทพมหานคร"],
-    ["10400", "วัดสามพระยา", "พระนคร", "กรุงเทพมหานคร"],
-    ["10500", "คลองเตย", "คลองเตย", "กรุงเทพมหานคร"],
-    ["10510", "คลองตัน", "คลองเตย", "กรุงเทพมหานคร"],
-    ["10520", "พระโขนง", "คลองเตย", "กรุงเทพมหานคร"],
-    ["20000", "ในเมือง", "เมืองนครราชสีมา", "นครราชสีมา"],
-    ["30000", "ตำบลปากน้ำ", "เมืองนครปฐม", "นครปฐม"],
-    ["40000", "ในเมือง", "เมืองขอนแก่น", "ขอนแก่น"],
-    ["50000", "ในเมือง", "เมืองเชียงใหม่", "เชียงใหม่"],
-    ["60000", "ตำบลตลาด", "เมืองนครสวรรค์", "นครสวรรค์"],
-    ["70000", "ปากน้ำ", "เมืองสมุทรปราการ", "สมุทรปราการ"],
-    ["80000", "ตลาด", "เมืองนครศรีธรรมราช", "นครศรีธรรมราช"],
-    ["90000", "ตำบลเกาะยอ", "เมืองสงขลา", "สงขลา"]
-  ]
-}
-
-async function checkDuplicateRegistration(supabase: any, data: any) {
-  try {
-    console.log('Checking duplicate registration...')
-    
-    const {
-      firstName,
-      lastName,
-      phone,
-      email,
-      villageOrBuilding,
-      houseNumber,
-      moo,
-      soi,
-      road,
-      province,
-      district,
-      subdistrict,
-      postcode
-    } = data
-
-    // สร้างที่อยู่เต็มรูปแบบ
-    const fullAddress = createFullAddress(
-      villageOrBuilding,
-      houseNumber,
-      moo,
-      soi,
-      road,
-      subdistrict,
-      district,
-      province,
-      postcode
-    )
-
-    // ตรวจสอบข้อมูลซ้ำ
-    const { data: existingRecords, error } = await supabase
-      .from('survey_responses')
-      .select('*')
-
-    if (error) {
-      console.error('Error checking duplicates:', error)
-      // ถ้าไม่มีตาราง ให้อนุญาต
-      return new Response(
-        JSON.stringify({ isDuplicate: false, reason: "" }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
-
-    if (!existingRecords || existingRecords.length === 0) {
-      return new Response(
-        JSON.stringify({ isDuplicate: false, reason: "" }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
-
-    // ตรวจสอบตามลำดับความสำคัญ
-    for (const record of existingRecords) {
-      // 1. ตรวจสอบเบอร์โทร
-      const cleanedPhone = cleanPhoneNumber(phone)
-      const existingPhone = cleanPhoneNumber(record.phone)
-      
-      if (cleanedPhone && existingPhone) {
-        if (cleanedPhone === existingPhone) {
-          return new Response(
-            JSON.stringify({ 
-              isDuplicate: true, 
-              reason: "เบอร์โทรซ้ำ (เบอร์โทร 1 เบอร์ ใช้ได้แค่ 1 ครั้ง)" 
-            }),
-            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-      }
-
-      // 2. ตรวจสอบอีเมล
-      if (email && record.email && 
-          cleanForComparison(email) === cleanForComparison(record.email)) {
-        return new Response(
-          JSON.stringify({ 
-            isDuplicate: true, 
-            reason: "อีเมลซ้ำ (อีเมลเดียวกันห้ามใช้ซ้ำ)" 
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
-
-      // 3. ตรวจสอบชื่อ-นามสกุล
-      if (firstName && lastName && record.first_name && record.last_name) {
-        if (cleanForComparison(firstName) === cleanForComparison(record.first_name) &&
-            cleanForComparison(lastName) === cleanForComparison(record.last_name)) {
-          return new Response(
-            JSON.stringify({ 
-              isDuplicate: true, 
-              reason: "ชื่อและนามสกุลซ้ำกัน (ไม่สามารถลงทะเบียนซ้ำได้)" 
-            }),
-            { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-          )
-        }
-      }
-
-      // 4. ตรวจสอบที่อยู่
-      const existingFullAddress = createFullAddress(
-        record.village_or_building,
-        record.house_number,
-        record.moo,
-        record.soi,
-        record.road,
-        record.subdistrict,
-        record.district,
-        record.province,
-        record.postcode
-      )
-
-      if (areAddressesSimilar(fullAddress, existingFullAddress)) {
-        return new Response(
-          JSON.stringify({ 
-            isDuplicate: true, 
-            reason: "ที่อยู่นี้ถูกลงทะเบียนแล้ว (ไม่ซ้ำบ้านเดียวกัน 1 บ้าน / 1 สิทธิ์)" 
-          }),
-          { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-        )
-      }
-    }
-
-    return new Response(
-      JSON.stringify({ isDuplicate: false, reason: "" }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
-
-  } catch (error) {
-    console.error('Error in checkDuplicateRegistration:', error)
-    // ถ้าเกิดข้อผิดพลาด ให้อนุญาต
-    return new Response(
-      JSON.stringify({ isDuplicate: false, reason: "" }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
+  if (result.length === 0) {
+    return []; // หรือเรียก fallback function ถ้ามี
   }
+
+  return result.map((row) => [
+    row.postcode,
+    row.subdistrict,
+    row.district,
+    row.province
+  ]);
 }
 
-async function submitSurveyData(supabase: any, formData: SurveyData) {
+// ตรวจสอบข้อมูลซ้ำในตาราง survey_responses โดยเช็ค phone และ email
+async function checkDuplicateRegistration(data) {
+  const { phone, email } = data;
+
+  if (!phone && !email) {
+    return { isDuplicate: false }; // ไม่มีข้อมูลตรวจสอบ
+  }
+
+  const query = [];
+  if (phone) query.push(`phone.eq.${phone}`);
+  if (email) query.push(`email.eq.${email}`);
+
+  const filterStr = query.join(',');
+
+  const { data: existing, error } = await supabase
+    .from('survey_responses')
+    .select('phone, email')
+    .or(filterStr);
+
+  if (error) {
+    console.error('Error checking duplicates:', error);
+    return { isDuplicate: false };
+  }
+
+  if (!existing || existing.length === 0) {
+    return { isDuplicate: false };
+  }
+
+  return {
+    isDuplicate: true,
+    reason: "ข้อมูลซ้ำในระบบ"
+  };
+}
+
+// บันทึกข้อมูลแบบสอบถาม
+async function submitSurveyData(formData) {
+  console.log('📝 Received form data:', JSON.stringify(formData));
+  
+  // ตรวจสอบข้อมูลสำคัญทีละฟิลด์
+  const requiredFields = {
+    firstName: formData.firstName,
+    lastName: formData.lastName,
+    phone: formData.phone,
+    houseNumber: formData.houseNumber,
+    province: formData.province,
+    district: formData.district,
+    subdistrict: formData.subdistrict
+  };
+
+  const missingFields = [];
+  for (const [key, value] of Object.entries(requiredFields)) {
+    if (!value || value.trim() === '') {
+      missingFields.push(key);
+    }
+  }
+
+  if (missingFields.length > 0) {
+    console.error('❌ Missing required fields:', missingFields);
+    return {
+      success: false,
+      message: `ข้อมูลไม่ครบ: ${missingFields.join(', ')}`,
+      missingFields: missingFields
+    };
+  }
+
   try {
-    console.log('Submitting survey data...')
-    
-    // ตรวจความถูกต้องของข้อมูล
-    if (!formData.firstName || !formData.lastName || !formData.phone || !formData.houseNumber) {
-      return new Response(
-        JSON.stringify({ 
-          success: false, 
-          message: "กรุณากรอกข้อมูลสำคัญให้ครบถ้วน โดยเฉพาะชื่อ นามสกุล เบอร์โทร และบ้านเลขที่"
-        }),
-        { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-      )
-    }
+    const id = await generateID();
+    console.log('📋 Generated ID:', id);
 
-    // สร้าง ID ใหม่
-    const uniqueID = await generateUniqueID(supabase)
-    console.log('Generated ID:', uniqueID)
-    
-    // จัดการอัปโหลดรูปภาพ
-    let imageUrls: string[] = []
-    if (formData.receiptFile) {
-      console.log('Processing image files...')
-      imageUrls = await saveMultipleImagesToDrive(supabase, formData.receiptFile, uniqueID)
-      console.log('Image URLs:', imageUrls)
-    }
-
-    // เตรียมข้อมูลสำหรับบันทึก
     const insertData = {
-      survey_id: uniqueID,
-      first_name: formData.firstName,
-      last_name: formData.lastName,
-      gender: formData.gender,
-      birth_day: formData.birthDay,
-      birth_month: formData.birthMonth,
-      birth_year: formData.birthYear,
-      occupation: formData.occupation,
-      occupation_other: formData.occupationOther || '',
-      monthly_income: formData.monthlyIncome,
-      village_or_building: formData.villageOrBuilding || '',
-      house_number: formData.houseNumber,
-      moo: formData.moo || '',
-      soi: formData.soi || '',
-      road: formData.road || '',
-      province: formData.province,
-      district: formData.district,
-      subdistrict: formData.subdistrict,
-      postcode: formData.postcode,
-      phone: formData.phone,
-      email: formData.email,
-      pet_type: formData.petType,
-      pet_count: formData.petCount,
-      current_brand: formData.currentBrand,
-      current_brand_other: formData.currentBrandOther || '',
-      receipt_upload: formData.receiptUpload || '',
-      reason_not_buy_buzz: formData.reasonNotBuyBuzz || '',
-      monthly_expense: formData.monthlyExpense,
-      marketing_channel: formData.marketingChannel,
-      marketing_channel_other: formData.marketingChannelOther || '',
-      receipt_file: formData.receiptFile ? 'Yes' : 'No',
-      image_urls: imageUrls.join('\n'),
-      important_factors: formData.importantFactors || '',
-      improvement_suggestions: formData.improvementSuggestions || '',
-      sample_product: formData.sampleProduct,
-      terms1: formData.terms1,
-      terms2: formData.terms2,
-      terms3: formData.terms3,
+      survey_id: id,
+      first_name: formData.firstName.trim(),
+      last_name: formData.lastName.trim(),
+      phone: formData.phone.trim(),
+      house_number: formData.houseNumber.trim(),
+      subdistrict: formData.subdistrict.trim(),
+      district: formData.district.trim(),
+      province: formData.province.trim(),
+      postcode: formData.postcode ? formData.postcode.trim() : null,
       registration_date: new Date().toISOString(),
-      notes: '',
-      status: 'ลงทะเบียนสำเร็จ'
-    }
+      status: 'ลงทะเบียนสำเร็จ',
+      email: formData.email ? formData.email.trim() : null
+    };
 
-    console.log('Inserting data:', insertData)
+    console.log('💾 Inserting data:', JSON.stringify(insertData));
 
-    // บันทึกข้อมูลลงฐานข้อมูล
-    const { error } = await supabase
-      .from('survey_responses')
-      .insert([insertData])
-
-    if (error) {
-      console.error('Database insert error:', error)
-      throw error
-    }
-
-    console.log('Data inserted successfully')
-
-    return new Response(
-      JSON.stringify({ success: true, message: 'บันทึกข้อมูลเรียบร้อยแล้ว' }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
-
-  } catch (error) {
-    console.error('Error submitting survey:', error)
-    return new Response(
-      JSON.stringify({ 
-        success: false, 
-        message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล: ' + error.message 
-      }),
-      { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
-    )
-  }
-}
-
-async function generateUniqueID(supabase: any): Promise<string> {
-  try {
-    // ดึง ID ล่าสุด
     const { data, error } = await supabase
       .from('survey_responses')
-      .select('survey_id')
-      .order('created_at', { ascending: false })
-      .limit(1)
+      .insert([insertData])
+      .select(); // เพิ่ม select เพื่อดูข้อมูลที่บันทึกแล้ว
 
     if (error) {
-      console.log('Error getting last ID (table might not exist):', error)
-      // ถ้าไม่มีตาราง ให้เริ่มจาก ID แรก
-      return "ATG00000001"
+      console.error('❌ Insert error details:', JSON.stringify(error));
+      return {
+        success: false,
+        message: 'ไม่สามารถบันทึกข้อมูลได้',
+        errorDetail: error.message,
+        errorCode: error.code
+      };
     }
 
-    let lastID = "ATG00000000"
-    if (data && data.length > 0) {
-      lastID = data[0].survey_id
-    }
+    console.log('✅ Data inserted successfully:', data);
+    return {
+      success: true,
+      message: 'บันทึกข้อมูลสำเร็จ',
+      surveyId: id,
+      insertedData: data
+    };
 
-    // ถ้าไม่มี ID เริ่มต้น ให้สร้างใหม่
-    if (!lastID || !lastID.startsWith("ATG")) {
-      lastID = "ATG00000000"
-    }
-
-    // แยกส่วนตัวเลขจาก ID
-    const numPart = parseInt(lastID.substring(3), 10)
-    const newNumPart = numPart + 1
-    const newNumPartStr = String(newNumPart).padStart(8, '0')
-
-    return "ATG" + newNumPartStr
   } catch (error) {
-    console.error('Error generating ID:', error)
-    // ใช้ timestamp เป็น fallback
-    const timestamp = Date.now().toString().slice(-8)
-    return "ATG" + timestamp
+    console.error('❌ Unexpected error in submitSurveyData:', error);
+    return {
+      success: false,
+      message: 'เกิดข้อผิดพลาดในการบันทึกข้อมูล',
+      errorDetail: error.message
+    };
   }
 }
 
-async function saveMultipleImagesToDrive(supabase: any, filesData: any, uniqueID: string): Promise<string[]> {
-  const imageUrls: string[] = []
-  
-  try {
-    const files = Array.isArray(filesData) ? filesData : [filesData]
-    
-    for (let index = 0; index < files.length; index++) {
-      const fileData = files[index]
-      
-      try {
-        // แปลง base64 เป็น Uint8Array
-        const byteCharacters = atob(fileData.data)
-        const byteNumbers = new Array(byteCharacters.length)
-        for (let i = 0; i < byteCharacters.length; i++) {
-          byteNumbers[i] = byteCharacters.charCodeAt(i)
-        }
-        const uint8Array = new Uint8Array(byteNumbers)
-        
-        // สร้างชื่อไฟล์
-        const fileExt = fileData.name.split('.').pop()
-        const fileName = files.length > 1 
-          ? `${uniqueID}_receipt_${index + 1}.${fileExt}`
-          : `${uniqueID}_receipt.${fileExt}`
-        
-        // อัปโหลดไฟล์ไปยัง Supabase Storage
-        const { data, error } = await supabase.storage
-          .from('survey-images')
-          .upload(fileName, uint8Array, {
-            contentType: fileData.type,
-            upsert: true
-          })
-        
-        if (error) {
-          console.error('Storage upload error:', error)
-          // ถ้าไม่สามารถอัปโหลดได้ ให้ข้ามไป
-          continue
-        }
-        
-        // สร้าง public URL
-        const { data: urlData } = supabase.storage
-          .from('survey-images')
-          .getPublicUrl(fileName)
-        
-        imageUrls.push(urlData.publicUrl)
-      } catch (fileError) {
-        console.error(`Error processing file ${index}:`, fileError)
-        // ข้ามไฟล์ที่มีปัญหา
-        continue
-      }
-    }
-    
-    return imageUrls
-  } catch (error) {
-    console.error('Error saving images:', error)
-    return []
+async function generateID() {
+  const { data, error } = await supabase
+    .from('survey_responses')
+    .select('survey_id')
+    .order('created_at', { ascending: false })
+    .limit(1);
+
+  let last = 'ATG00000000';
+
+  if (error) {
+    console.error('Error generating ID:', error);
   }
-}
 
-// Helper functions
-function cleanPhoneNumber(phone: string): string {
-  if (!phone) return ''
-  
-  let cleaned = String(phone).trim()
-  cleaned = cleaned.replace(/[^\d]/g, '')
-  
-  if (cleaned.startsWith('66') && cleaned.length >= 10) {
-    cleaned = '0' + cleaned.substring(2)
+  if (data && data.length > 0 && data[0].survey_id) {
+    last = data[0].survey_id;
   }
-  
-  return cleaned
-}
 
-function cleanForComparison(text: string): string {
-  if (!text) return ''
-  
-  let cleaned = String(text).trim()
-  cleaned = cleaned.toLowerCase().replace(/\s+/g, ' ')
-  
-  return cleaned
-}
-
-function createFullAddress(
-  villageOrBuilding?: string,
-  houseNumber?: string,
-  moo?: string,
-  soi?: string,
-  road?: string,
-  subdistrict?: string,
-  district?: string,
-  province?: string,
-  postcode?: string
-): string {
-  let parts: string[] = []
-  
-  if (houseNumber) parts.push("บ้านเลขที่ " + houseNumber)
-  if (moo) parts.push("หมู่ " + moo)
-  if (villageOrBuilding) parts.push(villageOrBuilding)
-  if (soi) parts.push("ซอย " + soi)
-  if (road) parts.push("ถนน " + road)
-  if (subdistrict) parts.push("ตำบล " + subdistrict)
-  if (district) parts.push("อำเภอ " + district)
-  if (province) parts.push("จังหวัด " + province)
-  if (postcode) parts.push(postcode)
-  
-  return parts.join(" ")
-}
-
-function areAddressesSimilar(address1: string, address2: string): boolean {
-  if (!address1 || !address2) return false
-  
-  const cleanedAddress1 = cleanForComparison(address1)
-  const cleanedAddress2 = cleanForComparison(address2)
-  
-  if (cleanedAddress1 === cleanedAddress2) return true
-  
-  const similarity = calculateSimilarity(cleanedAddress1, cleanedAddress2)
-  return similarity > 0.9
-}
-
-function calculateSimilarity(s1: string, s2: string): number {
-  if (!s1 || !s2) return 0
-  
-  const longer = s1.length > s2.length ? s1 : s2
-  const shorter = s1.length > s2.length ? s2 : s1
-  
-  if (longer.length === 0) return 1.0
-  
-  const editDistance = levenshteinDistance(longer, shorter)
-  return (longer.length - editDistance) / longer.length
-}
-
-function levenshteinDistance(s1: string, s2: string): number {
-  const costs: number[] = []
-  for (let i = 0; i <= s1.length; i++) {
-    let lastValue = i
-    for (let j = 0; j <= s2.length; j++) {
-      if (i === 0) {
-        costs[j] = j
-      } else if (j > 0) {
-        let newValue = costs[j - 1]
-        if (s1.charAt(i - 1) !== s2.charAt(j - 1)) {
-          newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1
-        }
-        costs[j - 1] = lastValue
-        lastValue = newValue
-      }
-    }
-    if (i > 0) {
-      costs[s2.length] = lastValue
-    }
-  }
-  return costs[s2.length]
+  const num = parseInt(last.replace('ATG', ''), 10) + 1;
+  return `ATG${String(num).padStart(8, '0')}`;
 }
