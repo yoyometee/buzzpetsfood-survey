@@ -88,12 +88,18 @@ Deno.serve(async (req) => {
 
 async function getPostCodeData(supabase: any) {
   try {
+    console.log('Fetching postcode data...')
     const { data, error } = await supabase
       .from('postcodes')
       .select('postcode, subdistrict, district, province')
       .order('province', { ascending: true })
 
-    if (error) throw error
+    if (error) {
+      console.error('Supabase error:', error)
+      throw error
+    }
+
+    console.log('Postcode data received:', data?.length || 0, 'records')
 
     // Convert to array format like original Google Sheets
     const formattedData = data.map((row: any) => [
@@ -103,11 +109,14 @@ async function getPostCodeData(supabase: any) {
       row.province
     ])
 
+    console.log('Formatted data ready:', formattedData.length, 'records')
+
     return new Response(
       JSON.stringify(formattedData),
       { headers: { ...corsHeaders, 'Content-Type': 'application/json' } }
     )
   } catch (error) {
+    console.error('Failed to get postcode data:', error)
     throw new Error(`Failed to get postcode data: ${error.message}`)
   }
 }
