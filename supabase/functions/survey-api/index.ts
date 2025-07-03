@@ -1,5 +1,5 @@
 import { createClient } from 'https://esm.sh/@supabase/supabase-js@2'
-import { corsHeaders } from './cors.ts'
+import { corsHeaders } from '../_shared/cors.ts'
 
 const supabaseUrl = Deno.env.get('https://mcsixclxwxvfyyddrzmh.supabase.co')!
 const supabaseServiceKey = Deno.env.get('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc1MTQ2MDUzOCwiZXhwIjoyMDY3MDM2NTM4fQ.rbE3mx3jTiXStLadxjNO3yKZoinlCzxvN-wf_R3nkg0')!
