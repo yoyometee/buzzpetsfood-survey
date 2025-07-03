@@ -1602,15 +1602,19 @@
     </div>
     </div>
 
-    <script>
+    <script type="module">
         // ============== Configuration ==============
-        // **สำคัญมาก: กรุณาเปลี่ยน URL ด้านล่างนี้เป็น URL จริงของ Supabase Edge Function ของคุณ**
-        // คุณสามารถหา URL นี้ได้จาก Supabase Dashboard -> Project Settings -> API -> Project URL
-        // เช่น: 'https://your-unique-project-id.supabase.co/functions/v1/survey-api'
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0NjA1MzgsImV4cCI6MjA2NzAzNjUzOH0.beq2VeTmn31QRPr5SmJZ1A5vc8PxWXugT89AVukwqm4'; // <-- เปลี่ยนตรงนี้!
-        const SUPABASE_FUNCTION_URL = 'https://mcsixclxwxvfyyddrzmh.supabase.co/functions/v1/survey-api'; // <-- เปลี่ยนตรงนี้!
+import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js/+esm';
 
-        // Global variables
+// URL ของโปรเจกต์ Supabase ของคุณ (ไม่มี /functions/v1/survey-api ต่อท้าย)
+const SUPABASE_URL = 'https://mcsixclxwxvfyyddrzmh.supabase.co'; 
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0NjA1MzgsImV4cCI6MjA2NzAzNjUzOH0.beq2VeTmn31QRPr5SmJZ1A5vc8PxWXugT89AVukwqm4';
+const SUPABASE_FUNCTION_URL = 'https://mcsixclxwxvfyyddrzmh.supabase.co/functions/v1/survey-api';
+
+// สร้าง Supabase client
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+     
+       
         let postCodeData = [];
 
         // Updated pet food brands based on pet type
@@ -1649,37 +1653,52 @@
         ];
 
         // ============== API Functions ==============
-        async function callSupabaseAPI(action, data = null) {
-            const url = `${SUPABASE_FUNCTION_URL}?action=${action}`;
+       // ============== API Functions ==============
+async function callSupabaseAPI(action, data = null) {
+    // 1. ดึงข้อมูล session และ access_token จาก Supabase
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
 
-            const options = {
-                method: data ? 'POST' : 'GET',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            };
+    // หากไม่มี session (ผู้ใช้ไม่ได้ล็อกอิน) หรือดึง session ไม่ได้ ให้หยุดทำงาน
+    if (sessionError || !session) {
+        console.error('Authentication Error:', sessionError?.message || 'User not authenticated.');
+        throw new Error('ไม่สามารถยืนยันตัวตนได้ กรุณาลองใหม่อีกครั้ง');
+    }
 
-            if (data) {
-                options.body = JSON.stringify(data);
-            }
+    // 2. สร้าง Headers พร้อมแนบ Authorization Token
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.access_token}` // <--- ส่วนที่สำคัญที่สุด
+    };
 
+    const url = `${SUPABASE_FUNCTION_URL}?action=${action}`;
+    const options = {
+        method: data ? 'POST' : 'GET',
+        headers: headers
+    };
+
+    if (data) {
+        options.body = JSON.stringify(data);
+    }
+
+    try {
+        const response = await fetch(url, options);
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
+            // พยายามแปลง errorText เป็น JSON ถ้าทำได้
             try {
-                const response = await fetch(url, options);
-
-                if (!response.ok) {
-                    const errorText = await response.text(); // Read the raw error response
-                    console.error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
-                    throw new Error(`Server error (${response.status}): ${errorText}`);
-                }
-
-                const result = await response.json();
-                return result;
-            } catch (error) {
-                console.error('Error calling Supabase API:', error);
-                throw error;
+                const errorJson = JSON.parse(errorText);
+                throw new Error(`Server error (${response.status}): ${errorJson.message || errorText}`);
+            } catch (e) {
+                throw new Error(`Server error (${response.status}): ${errorText}`);
             }
         }
-
+        return await response.json();
+    } catch (error) {
+        console.error('Error calling Supabase API:', error);
+        throw error;
+    }
+}
         // ============== Initialization ==============
         window.onload = function() {
             // Populate birth year and day dropdowns
