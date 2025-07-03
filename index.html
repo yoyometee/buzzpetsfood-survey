@@ -1551,7 +1551,6 @@
                             ท่านสามารถลงทะเบียนรับผลิตภัณฑ์อาหารแมวหรือสุนัข Buzz Netura Holistic Grain Free ขนาดทดลองฟรี ได้ตั้งแต่วันนี้ – 31 ธันวาคม 2568 เท่านั้น
                             สงวนสิทธิ์การรับผลิตภัณฑ์สำหรับผู้ที่ไม่เคยใช้ผลิตภัณฑ์อาหารแมวหรือสุนัข Buzz Netura Holistic Grain Free มาก่อน
                             จำกัดจำนวน 1 ชิ้น ต่อ 1 ท่าน ต่อ 1 ที่อยู่ ตลอดระยะเวลาการลงทะเบียนที่กำหนด
-                            ผลิตภัณฑ์จะถูกจัดส่งทางไปรษณีย์ตามที่อยู่ที่ระบุภายใน 30 วันทำการ หลังจากวันที่ท่านลงทะเบียนสำเร็จ
                             <span style="color: #ff5252;">*</span>
                         </label>
                     </div>
@@ -1603,20 +1602,16 @@
     </div>
     </div>
 
-  <script>
+    <script>
         // ============== Configuration ==============
         // **สำคัญมาก: กรุณาเปลี่ยน URL ด้านล่างนี้เป็น URL จริงของ Supabase Edge Function ของคุณ**
         // คุณสามารถหา URL นี้ได้จาก Supabase Dashboard -> Project Settings -> API -> Project URL
         // เช่น: 'https://your-unique-project-id.supabase.co/functions/v1/survey-api'
-        const SUPABASE_FUNCTION_URL = 'https://mcsixclxwxvfyyddrzmh.supabase.co/functions/v1/survey-api'; // <-- ต้องแน่ใจว่าบรรทัดนี้อยู่ตรงนี้!
+        const SUPABASE_FUNCTION_URL = 'https://mcsixclxwxvfyyddrzmh.supabase.co/functions/v1/survey-api'; // <-- เปลี่ยนตรงนี้!
 
-        // **สำคัญมาก: กรุณาเปลี่ยน YOUR_ANON_PUBLIC_KEY ที่นี่**
-        // คุณสามารถหา API Key นี้ได้จาก Supabase Dashboard -> Project Settings -> API -> Project API keys -> anon (public)
-        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1jc2l4Y2x4d3h2Znl5ZGRyem1oIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE0NjA1MzgsImV4cCI6MjA2NzAzNjUzOH0.beq2VeTmn31QRPr5SmJZ1A5vc8PxWXugT89AVukwqm4'; // <-- เปลี่ยนตรงนี้!
-
-        // Global variables (should be declared after the above constants)
+        // Global variables
         let postCodeData = [];
-        
+
         // Updated pet food brands based on pet type
         let petFoodBrands = {
             แมว: [
@@ -1654,16 +1649,12 @@
 
         // ============== API Functions ==============
         async function callSupabaseAPI(action, data = null) {
-            // This is line 49 for the error message if we consider only script block.
-            const url = `${SUPABASE_FUNCTION_URL}?action=${action}`; 
+            const url = `${SUPABASE_FUNCTION_URL}?action=${action}`;
 
             const options = {
                 method: data ? 'POST' : 'GET',
                 headers: {
                     'Content-Type': 'application/json',
-                    // *** เพิ่ม Authorization header ตรงนี้ ***
-                    'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-                    'apikey': SUPABASE_ANON_KEY // บางครั้งก็ใส่ apikey แยกต่างหากด้วย
                 }
             };
 
@@ -1675,7 +1666,7 @@
                 const response = await fetch(url, options);
 
                 if (!response.ok) {
-                    const errorText = await response.text();
+                    const errorText = await response.text(); // Read the raw error response
                     console.error(`HTTP error! Status: ${response.status}, Response: ${errorText}`);
                     throw new Error(`Server error (${response.status}): ${errorText}`);
                 }
@@ -1703,16 +1694,17 @@
                     showError('ไม่สามารถโหลดข้อมูลรหัสไปรษณีย์ได้ กรุณาลองใหม่อีกครั้ง');
                 });
 
-            // Load factor options
+            // โหลดตัวเลือกปัจจัย
             loadFactorOptions();
 
             // Initialize selected counts
             updateSelectedCount('reasonNotBuyBuzz', 'reasonSelectedCount');
             updateSelectedCount('marketingChannelMultiple', 'channelSelectedCount');
             updateSelectedCount('improvementSuggestions', 'improveSelectedCount');
-            
+            // updateSelectedCount for currentBrandMultiple will be called by updatePetBrandsAndSampleOptions
+
             // Setup event listeners for "อื่นๆ" text fields in collapsible
-            setupBrandOtherListener(); 
+            setupBrandOtherListener(); // This needs to be called after brand checkboxes are populated
             document.getElementById('reasonOther').addEventListener('input', () => updateSelectedCount('reasonNotBuyBuzz', 'reasonSelectedCount'));
             document.getElementById('channelOther').addEventListener('input', () => updateSelectedCount('marketingChannelMultiple', 'channelSelectedCount'));
             document.getElementById('improveOther').addEventListener('input', () => updateSelectedCount('improvementSuggestions', 'improveSelectedCount'));
@@ -1830,7 +1822,7 @@
             document.getElementById('currentBrandOther').value = '';
         }
 
-        // Load factor options for all three dropdowns
+        // โหลดตัวเลือกปัจจัยสำหรับ dropdown ทั้ง 3
         function loadFactorOptions() {
             const factorSelects = ['factor1', 'factor2', 'factor3'];
 
@@ -1847,7 +1839,7 @@
             });
         }
 
-        // Update factor options when a selection is made
+        // อัปเดตตัวเลือกปัจจัยเมื่อมีการเลือก
         function updateFactorOptions() {
             const factor1 = document.getElementById('factor1').value;
             const factor2 = document.getElementById('factor2').value;
@@ -1855,7 +1847,7 @@
 
             const selectedValues = [factor1, factor2, factor3].filter(val => val !== '');
 
-            // Check and display "อื่นๆ" input fields for each factor
+            // ตรวจสอบและแสดงช่องกรอก "อื่นๆ" สำหรับแต่ละลำดับ
             const factorOtherGroups = {
                 'factor1': document.getElementById('factor1OtherGroup'),
                 'factor2': document.getElementById('factor2OtherGroup'),
@@ -1867,7 +1859,7 @@
                 'factor3': document.getElementById('factor3Other')
             };
 
-            // Factor 1
+            // ลำดับที่ 1
             if (factor1 === 'อื่นๆ') {
                 factorOtherGroups['factor1'].classList.remove('hidden-field');
                 factorOtherInputs['factor1'].required = true;
@@ -1884,7 +1876,7 @@
                 factorOtherInputs['factor1'].value = '';
             }
 
-            // Factor 2
+            // ลำดับที่ 2
             if (factor2 === 'อื่นๆ') {
                 factorOtherGroups['factor2'].classList.remove('hidden-field');
                 factorOtherInputs['factor2'].required = true;
@@ -1901,7 +1893,7 @@
                 factorOtherInputs['factor2'].value = '';
             }
 
-            // Factor 3
+            // ลำดับที่ 3
             if (factor3 === 'อื่นๆ') {
                 factorOtherGroups['factor3'].classList.remove('hidden-field');
                 factorOtherInputs['factor3'].required = true;
@@ -1918,14 +1910,14 @@
                 factorOtherInputs['factor3'].value = '';
             }
 
-            // Disable options already selected in other dropdowns
+            // ปิดกั้นตัวเลือกที่ถูกเลือกแล้วใน dropdown อื่นๆ
             const factorSelects = ['factor1', 'factor2', 'factor3'];
 
             factorSelects.forEach(selectId => {
                 const select = document.getElementById(selectId);
                 const currentValue = select.value;
 
-                // Keep current selection
+                // เก็บตัวเลือกปัจจุบัน
                 select.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
 
                 factorOptions.forEach(option => {
@@ -1933,7 +1925,8 @@
                     optionElement.value = option;
                     optionElement.text = option;
 
-                    // Disable selected options in other dropdowns
+                    // ปิดกั้นตัวเลือกที่ถูกเลือกแล้วในช่องอื่น
+                    // แต่ยังคงให้เลือก "อื่นๆ" ได้เสมอ หรือเลือกค่าเดิมที่ถูกเลือกไปแล้วใน select ตัวเองได้
                     if (selectedValues.includes(option) && currentValue !== option && option !== 'อื่นๆ') {
                         optionElement.disabled = true;
                         optionElement.text += ' (เลือกแล้ว)';
@@ -1942,12 +1935,12 @@
                     select.appendChild(optionElement);
                 });
 
-                // Restore previous selection
+                // คืนค่าเดิม
                 select.value = currentValue;
             });
         }
 
-        // Show/hide other occupation input field
+        // แสดง/ซ่อนช่องกรอกอาชีพอื่นๆ
         function toggleOccupationOther() {
             const occupation = document.getElementById('occupation').value;
             const otherGroup = document.getElementById('occupationOtherGroup');
@@ -1969,10 +1962,10 @@
             }
         }
 
-        // Show/hide other brand input field
+        // แสดง/ซ่อนช่องกรอกแบรนด์อื่นๆ
         function toggleBrandOther() {
             const otherCheckbox = document.querySelector('input[name="currentBrandMultiple"][value="อื่นๆ"]');
-            const isChecked = otherCheckbox ? otherCheckbox.checked : false;
+            const isChecked = otherCheckbox ? otherCheckbox.checked : false; // Check if the checkbox exists and is checked
             const otherGroup = document.getElementById('brandOtherGroup');
 
             if (isChecked) {
@@ -1992,7 +1985,8 @@
             updateBrandPreview();
         }
 
-        // Show/hide other reason input field
+
+        // แสดง/ซ่อนช่องกรอกเหตุผลอื่นๆ
         function toggleReasonOther() {
             const isChecked = document.getElementById('reason9').checked;
             const otherGroup = document.getElementById('reasonOtherGroup');
@@ -2012,7 +2006,7 @@
             }
         }
 
-        // Show/hide other channel input field
+        // แสดง/ซ่อนช่องกรอกช่องทางอื่นๆ
         function toggleChannelOther() {
             const isChecked = document.getElementById('channel11').checked;
             const otherGroup = document.getElementById('channelOtherGroup');
@@ -2032,7 +2026,7 @@
             }
         }
 
-        // Show/hide other improvement input field
+        // แสดง/ซ่อนช่องกรอกข้อเสนอแนะอื่นๆ
         function toggleImproveOther() {
             const isChecked = document.getElementById('improve11').checked;
             const otherGroup = document.getElementById('improveOtherGroup');
@@ -2052,11 +2046,12 @@
             }
         }
 
-        // Update sample product options based on pet type
+        // อัปเดตตัวเลือกสินค้าตัวอย่างตามประเภทสัตว์เลี้ยง
         function updateSampleOptions() {
             const petType = document.getElementById('petType').value;
             const sampleSelect = document.getElementById('sampleProduct');
 
+            // เคลียร์ตัวเลือกเดิม
             sampleSelect.innerHTML = '<option value="">-- กรุณาเลือก --</option>';
 
             if (petType === 'แมว') {
@@ -2089,6 +2084,7 @@
                 });
 
             } else if (petType === 'สุนัขและแมว') {
+                // แสดงทั้งหมด
                 const allOptions = [
                     { value: 'Fish & Chicken Formula', text: 'Fish & Chicken Formula (อาหารแมว)' },
                     { value: 'Salmon Formula', text: 'Salmon Formula (อาหารแมว)' },
